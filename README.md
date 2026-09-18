@@ -150,12 +150,3 @@ MarketingKit - Porque todo pequeno negócio merece material profissional! 🌟
         
     
 
-Perfeito! Agora temos:
-
-✅ README completo com linguagem simples e acessível
-✅ Seção de contribuição explicando como apoiar o projeto
-✅ Link do Mercado Pago integrado
-✅ Botão discreto no footer da aplicação para quem quiser contribuir
-✅ Mensagem amigável incentivando o apoio sem ser invasivo
-
-Assim, quem gostar das ferramentas pode retribuir com um cafezinho e ajudar a manter o projeto vivo! ☕🚀
