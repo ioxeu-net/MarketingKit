@@ -83,7 +83,7 @@ Gostou do MarketingKit? Quer ajudar a gente a criar mais ferramentas úteis para
 
 Sua contribuição ajuda a manter o projeto vivo e a desenvolver novas funcionalidades!
 
-Apoie o projeto: um pedido que eu possa usar no facebook tbm https://link.mercadopago.com.br/calculesorte
+Apoie o projeto: https://link.mercadopago.com.br/calculesorte
 
 👆 Clique aqui para fazer sua contribuição
 
