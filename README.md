@@ -1,5 +1,3 @@
-Claro! Vou adicionar uma seção de contribuição no README e também um botão discreto na aplicação:
-
 MarketingKit 🚀
 
 Ferramentas gratuitas de marketing para pequenos negócios
