@@ -1,1275 +1,973 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketingKit - Ferramentas Grátis para Seu Negócio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fontsource@latest/fonts/inter/latin.css" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.6s ease-out; }
-        .tool-section { display: none; }
-        .tool-section.active { display: block; }
-        .template-card { cursor: pointer; transition: all 0.3s ease; }
-        .template-card:hover { transform: scale(1.05); }
-        .template-card.selected { border: 3px solid #667eea; }
-        .preview-container { min-height: 300px; }
-        @media (max-width: 768px) {
-            .preview-container { min-height: 250px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketingKit Pro - Assistente de Marketing Inteligente</title>
+<meta name="description" content="Crie cartões, banners, logos e muito mais com IA local. 100% grátis, sem cadastro.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafafa; --card: #ffffff; --text: #1a1a1a; --text-sec: #64748b;
+    --border: #e2e8f0; --accent: #6366f1; --accent-2: #ec4899;
+  }
+  .dark {
+    --bg: #0f0f14; --card: #1a1a24; --text: #f1f5f9; --text-sec: #94a3b8;
+    --border: #2d2d3d; --accent: #818cf8; --accent-2: #f472b6;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; transition: background .3s, color .3s; }
+  .card-bg { background: var(--card); border: 1px solid var(--border); }
+  .text-sec { color: var(--text-sec); }
+  .gradient-pro { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ec4899 100%); }
+  .gradient-gold { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); }
+  .glass { background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); }
+  .dark .glass { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); }
+  .tool-section { display: none; animation: slideUp .4s ease; }
+  .tool-section.active { display: block; }
+  @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 20px rgba(99,102,241,.3); } 50% { box-shadow: 0 0 40px rgba(99,102,241,.6); } }
+  .pulse-glow { animation: pulse-glow 2s infinite; }
+  .shimmer { background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); background-size: 200% 100%; animation: shimmer 2s infinite; }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  .tool-card { transition: all .3s cubic-bezier(.4,0,.2,1); cursor: pointer; }
+  .tool-card:hover { transform: translateY(-8px) scale(1.02); }
+  .tool-card::before { content:''; position:absolute; inset:0; border-radius:1rem; padding:2px; background: linear-gradient(135deg, #667eea, #ec4899); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .3s; }
+  .tool-card:hover::before { opacity: 1; }
+  .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: transform .2s; border: 2px solid transparent; }
+  .color-dot:hover { transform: scale(1.15); }
+  .color-dot.active { border-color: var(--text); transform: scale(1.1); }
+  .mockup-hand { position: relative; }
+  .mockup-phone { background: #1a1a1a; border-radius: 32px; padding: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); }
+  .mockup-phone::before { content:''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 80px; height: 6px; background: #000; border-radius: 3px; }
+  .badge-new { position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #ef4444, #f59e0b); color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
+  .tab-pill { transition: all .2s; }
+  .tab-pill.active { background: var(--accent); color: white; }
+  .history-item { transition: all .2s; cursor: pointer; }
+  .history-item:hover { background: var(--border); }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--card); border: 1px solid var(--border); padding: 12px 24px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,.1); transition: transform .3s; z-index: 100; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .skeleton { background: linear-gradient(90deg, var(--border) 25%, rgba(255,255,255,.3) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+  .niche-chip { padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all .2s; font-size: 13px; }
+  .niche-chip.active { background: var(--accent); color: white; }
+  .copy-suggestion { background: linear-gradient(135deg, rgba(99,102,241,.1), rgba(236,72,153,.1)); border-left: 3px solid var(--accent); padding: 12px; border-radius: 8px; cursor: pointer; transition: all .2s; }
+  .copy-suggestion:hover { transform: translateX(4px); }
+  .seasonal-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: linear-gradient(135deg, #ef4444, #f59e0b); color: white; border-radius: 20px; font-size: 12px; font-weight: 600; animation: pulse-glow 2s infinite; }
+  @media (max-width: 768px) {
+    .tool-card:hover { transform: none; }
+  }
+</style>
 </head>
-<body class="bg-gray-50">
-    <!-- Header -->
-    <header class="gradient-bg text-white py-4 md:py-6 shadow-lg">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between flex-wrap gap-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 md:w-8 md:h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-bold">MarketingKit</h1>
-                        <p class="text-purple-200 text-xs md:text-sm">Ferramentas grátis para seu negócio</p>
-                    </div>
+<body>
+
+<!-- Header -->
+<header class="gradient-pro text-white sticky top-0 z-40 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="showMenu()">
+      <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+        <svg class="w-6 h-6 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="font-bold text-lg md:text-xl">MarketingKit Pro</h1>
+        <p class="text-xs text-purple-200">Assistente inteligente · 100% grátis</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="showHistory()" class="p-2 rounded-lg hover:bg-white/10 transition" title="Histórico">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </button>
+      <button onclick="toggleDark()" class="p-2 rounded-lg hover:bg-white/10 transition" id="darkBtn">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+      <button onclick="showHelp()" class="px-3 py-2 bg-white text-indigo-600 rounded-lg font-semibold text-sm hover:bg-purple-50 transition">Como Usar</button>
+    </div>
+  </div>
+</header>
+
+<!-- Menu Principal -->
+<section id="mainMenu" class="py-8 md:py-12">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-8 md:mb-12">
+      <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+        <span>NOVO · IA local gera textos persuasivos</span>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Crie materiais profissionais<br><span class="bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">sem saber design</span></h2>
+      <p class="text-sec text-base md:text-lg max-w-2xl mx-auto">12 ferramentas inteligentes que pensam no seu negócio. QR codes reais, paletas por nicho e textos prontos.</p>
+    </div>
+
+    <!-- Sazonalidade -->
+    <div id="seasonalBanner" class="hidden mb-8 p-6 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 text-white text-center">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <span class="text-2xl" id="seasonalEmoji">🎄</span>
+        <h3 class="font-bold text-xl" id="seasonalTitle">Temporada Especial</h3>
+      </div>
+      <p class="text-sm opacity-90" id="seasonalDesc">Crie materiais temáticos automaticamente</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+      <!-- Ferramentas -->
+      <div class="tool-card relative card-bg rounded-2xl p-5" onclick="showTool('cartao-digital')">
+        <div class="badge-new">NOVO</div>
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">📱</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Cartão Digital QR</h3>
+        <p class="text-sec text-xs">QR real do WhatsApp/Pix</p>
+      </div>
+
+      <div class="tool-card relative card-bg rounded-2xl p-5" onclick="showTool('post-ia')">
+        <div class="badge-new">IA</div>
+        <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">✍️</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Post com Copy IA</h3>
+        <p class="text-sec text-xs">Texto persuasivo automático</p>
+      </div>
+
+      <div class="tool-card relative card-bg rounded-2xl p-5" onclick="showTool('banner-sazonal')">
+        <div class="badge-new">AUTO</div>
+        <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">🎄</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Banner Sazonal</h3>
+        <p class="text-sec text-xs">Detecta Natal, Black Friday</p>
+      </div>
+
+      <div class="tool-card relative card-bg rounded-2xl p-5" onclick="showTool('menu-pix')">
+        <div class="badge-new">NOVO</div>
+        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">💳</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Menu + QR Pix</h3>
+        <p class="text-sec text-xs">Cardápio com pagamento</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cartao')">
+        <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">💳</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Cartão Clássico</h3>
+        <p class="text-sec text-xs">Design elegante</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('banner')">
+        <div class="w-12 h-12 bg-pink-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">📱</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Banner Redes</h3>
+        <p class="text-sec text-xs">Instagram, Facebook</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('anuncio')">
+        <div class="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">🏷️</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Anúncio CTA</h3>
+        <p class="text-sec text-xs">Botão de ação real</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('story')">
+        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">📊</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Story Interativo</h3>
+        <p class="text-sec text-xs">Enquete e pergunta</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('flyer')">
+        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">📄</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Flyer Digital</h3>
+        <p class="text-sec text-xs">Eventos e promoções</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cardapio')">
+        <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">📋</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Cardápio</h3>
+        <p class="text-sec text-xs">Lista de preços</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('logo')">
+        <div class="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">⭐</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Logotipo</h3>
+        <p class="text-sec text-xs">Marca da empresa</p>
+      </div>
+
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('assinatura')">
+        <div class="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center mb-3">
+          <span class="text-2xl">✉️</span>
+        </div>
+        <h3 class="font-bold text-sm md:text-base mb-1">Assinatura Email</h3>
+        <p class="text-sec text-xs">Profissional</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FERRAMENTA: CARTÃO DIGITAL COM QR REAL -->
+<section id="cartao-digital" class="tool-section py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <button onclick="showMenu()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold text-sm">← Voltar ao Menu</button>
+    <h2 class="text-2xl md:text-3xl font-bold mb-2">📱 Cartão Digital com QR Real</h2>
+    <p class="text-sec mb-6">QR code funcional que abre WhatsApp, Pix ou Maps direto no celular do cliente</p>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="card-bg rounded-2xl p-6 space-y-4">
+        <h3 class="font-bold text-lg">Dados do cartão</h3>
+        
+        <div>
+          <label class="block text-sm font-medium mb-1">Seu nicho</label>
+          <div class="flex flex-wrap gap-2" id="nicheChips">
+            <span class="niche-chip bg-gray-100 dark:bg-gray-800" onclick="selectNiche('geral', this)">Geral</span>
+            <span class="niche-chip bg-gray-100 dark:bg-gray-800" onclick="selectNiche('restaurante', this)">Restaurante</span>
+            <span class="niche-chip bg-gray-100 dark:bg-gray-800" onclick="selectNiche('beleza', this)">Beleza</span>
+            <span class="niche-chip bg-gray-100 dark:bg-gray-800" onclick="selectNiche('tech', this)">Tech</span>
+            <span class="niche-chip bg-gray-100 dark:bg-gray-800" onclick="selectNiche('fitness', this)">Fitness</span>
+            <span class="niche-chip bg-gray-100 dark:bg-gray-800" onclick="selectNiche('moda', this)">Moda</span>
+          </div>
+        </div>
+
+        <input type="text" id="cd-nome" placeholder="Nome da empresa" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateCartaoDigital()">
+        <input type="text" id="cd-profissao" placeholder="Ex: Cabeleireira, Designer" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateCartaoDigital()">
+        <input type="tel" id="cd-whatsapp" placeholder="WhatsApp (11) 99999-9999" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateCartaoDigital()">
+        <input type="text" id="cd-instagram" placeholder="@instagram (opcional)" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateCartaoDigital()">
+        <input type="text" id="cd-pix" placeholder="Chave Pix (opcional)" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateCartaoDigital()">
+
+        <div>
+          <label class="block text-sm font-medium mb-2">QR Code principal</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="selectQRType('whatsapp', this)" class="qr-type-btn px-3 py-2 rounded-lg border-2 border-indigo-500 text-sm font-medium">WhatsApp</button>
+            <button onclick="selectQRType('pix', this)" class="qr-type-btn px-3 py-2 rounded-lg border-2 border-gray-300 text-sm font-medium">Pix</button>
+            <button onclick="selectQRType('maps', this)" class="qr-type-btn px-3 py-2 rounded-lg border-2 border-gray-300 text-sm font-medium">Maps</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Paleta inteligente</label>
+          <div class="flex gap-2" id="paletteColors"></div>
+          <p class="text-xs text-sec mt-1" id="paletteHint">Selecione um nicho para ver paletas sugeridas</p>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="downloadCartaoDigital('png')" class="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition">📥 PNG</button>
+          <button onclick="downloadCartaoDigital('pdf')" class="flex-1 py-3 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-lg font-semibold hover:shadow-lg transition">📄 PDF</button>
+          <button onclick="shareCartaoDigital()" class="py-3 px-4 bg-gray-800 text-white rounded-lg font-semibold hover:bg-gray-700 transition">🔗</button>
+        </div>
+      </div>
+
+      <div class="card-bg rounded-2xl p-6">
+        <h3 class="font-bold text-lg mb-4">Preview (como o cliente vê)</h3>
+        <div class="mockup-hand flex justify-center">
+          <div class="mockup-phone w-72">
+            <div id="cd-preview" class="rounded-2xl overflow-hidden aspect-[9/16] bg-gradient-to-br from-indigo-500 to-purple-600 p-6 text-white flex flex-col justify-between">
+              <div>
+                <h3 class="text-2xl font-bold" id="cd-prev-nome">Sua Empresa</h3>
+                <p class="text-sm opacity-80 mt-1" id="cd-prev-prof">Sua profissão</p>
+              </div>
+              <div class="bg-white/20 backdrop-blur rounded-xl p-4">
+                <div id="cd-prev-qr" class="bg-white p-3 rounded-lg mb-3 flex items-center justify-center aspect-square"></div>
+                <p class="text-center text-xs opacity-90">Escaneie para conversar</p>
+              </div>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center gap-2" id="cd-prev-wpp">
+                  <span>📱</span><span id="cd-prev-wpp-txt">WhatsApp</span>
                 </div>
-                <button onclick="showHelp()" class="bg-white text-purple-600 px-3 md:px-4 py-2 rounded-full font-semibold hover:bg-purple-50 transition text-sm md:text-base">
-                    📖 Como Usar
-                </button>
+                <div class="flex items-center gap-2" id="cd-prev-insta">
+                  <span>📷</span><span id="cd-prev-insta-txt">@instagram</span>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </header>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Menu Principal -->
-    <section id="mainMenu" class="py-8 md:py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-4 animate-fade-in">
-                Escolha o que você quer criar hoje
-            </h2>
-            <p class="text-center text-gray-600 mb-8 md:mb-12 max-w-2xl mx-auto text-sm md:text-base px-4">
-                Tudo de graça e fácil de usar. Não precisa saber nada de design!
-            </p>
-            
-            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
-                <!-- Cartão de Visita -->
-                <div class="card-hover bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-4 md:p-6 cursor-pointer" onclick="showTool('cartao')">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-blue-500 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl md:text-2xl">💳</span>
-                    </div>
-                    <h3 class="text-base md:text-xl font-semibold text-gray-800 mb-2 text-center">Cartão de Visita</h3>
-                    <p class="text-gray-600 text-center text-xs md:text-sm">Crie cartões profissionais com QR Code</p>
-                </div>
+<!-- FERRAMENTA: POST COM COPY IA -->
+<section id="post-ia" class="tool-section py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <button onclick="showMenu()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold text-sm">← Voltar ao Menu</button>
+    <h2 class="text-2xl md:text-3xl font-bold mb-2">✍️ Post com Copy Gerada por IA</h2>
+    <p class="text-sec mb-6">IA local gera textos persuasivos baseados no seu produto e público</p>
 
-                <!-- Banner Redes Sociais -->
-                <div class="card-hover bg-gradient-to-br from-pink-100 to-red-100 rounded-2xl p-4 md:p-6 cursor-pointer" onclick="showTool('banner')">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-pink-500 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl md:text-2xl">📱</span>
-                    </div>
-                    <h3 class="text-base md:text-xl font-semibold text-gray-800 mb-2 text-center">Banner para Redes</h3>
-                    <p class="text-gray-600 text-center text-xs md:text-sm">Posts prontos para Instagram e Facebook</p>
-                </div>
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="card-bg rounded-2xl p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Tipo de post</label>
+          <select id="pi-tipo" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" onchange="generateCopy()">
+            <option value="promo">🏷️ Promoção</option>
+            <option value="lancamento">🚀 Lançamento</option>
+            <option value="depoimento">⭐ Depoimento</option>
+            <option value="dica">💡 Dica/Conteúdo</option>
+            <option value="urgencia">⏰ Urgência</option>
+          </select>
+        </div>
 
-                <!-- Anúncio Promocional -->
-                <div class="card-hover bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl p-4 md:p-6 cursor-pointer" onclick="showTool('anuncio')">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-yellow-500 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl md:text-2xl">🏷️</span>
-                    </div>
-                    <h3 class="text-base md:text-xl font-semibold text-gray-800 mb-2 text-center">Anúncio de Venda</h3>
-                    <p class="text-gray-600 text-center text-xs md:text-sm">Crie anúncios bonitos para vender mais</p>
-                </div>
+        <input type="text" id="pi-produto" placeholder="Nome do produto/serviço" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="generateCopy()">
+        <input type="text" id="pi-beneficio" placeholder="Principal benefício" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="generateCopy()">
+        <input type="text" id="pi-publico" placeholder="Para quem é? (ex: mães, jovens)" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="generateCopy()">
+        <input type="text" id="pi-oferta" placeholder="Oferta/preço (opcional)" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="generateCopy()">
 
-                <!-- Flyer Digital -->
-                <div class="card-hover bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl p-4 md:p-6 cursor-pointer" onclick="showTool('flyer')">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-green-500 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl md:text-2xl">📄</span>
-                    </div>
-                    <h3 class="text-base md:text-xl font-semibold text-gray-800 mb-2 text-center">Flyer Digital</h3>
-                    <p class="text-gray-600 text-center text-xs md:text-sm">Panfletos digitais para divulgar</p>
-                </div>
+        <button onclick="generateCopy()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold shimmer">✨ Gerar 3 textos persuasivos</button>
 
-                <!-- Cardápio/Preços -->
-                <div class="card-hover bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl p-4 md:p-6 cursor-pointer" onclick="showTool('cardapio')">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-purple-500 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl md:text-2xl">📋</span>
-                    </div>
-                    <h3 class="text-base md:text-xl font-semibold text-gray-800 mb-2 text-center">Cardápio/Preços</h3>
-                    <p class="text-gray-600 text-center text-xs md:text-sm">Lista de produtos e preços bonita</p>
-                </div>
+        <div class="space-y-2" id="copySuggestions"></div>
 
-                <!-- Logo -->
-                <div class="card-hover bg-gradient-to-br from-gray-100 to-slate-100 rounded-2xl p-4 md:p-6 cursor-pointer" onclick="showTool('logo')">
-                    <div class="w-12 h-12 md:w-16 md:h-16 bg-gray-500 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl md:text-2xl">⭐</span>
-                    </div>
-                    <h3 class="text-base md:text-xl font-semibold text-gray-800 mb-2 text-center">Logotipo</h3>
-                    <p class="text-gray-600 text-center text-xs md:text-sm">Crie a marca da sua empresa</p>
-                </div>
+        <div class="mt-4">
+          <label class="block text-sm font-medium mb-1">Texto final (edite à vontade)</label>
+          <textarea id="pi-text" rows="5" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updatePostIA()"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Paleta</label>
+          <div class="flex gap-2">
+            <button onclick="setPostColor('#6366f1', this)" class="color-dot active" style="background:#6366f1"></button>
+            <button onclick="setPostColor('#ec4899', this)" class="color-dot" style="background:#ec4899"></button>
+            <button onclick="setPostColor('#10b981', this)" class="color-dot" style="background:#10b981"></button>
+            <button onclick="setPostColor('#f59e0b', this)" class="color-dot" style="background:#f59e0b"></button>
+            <button onclick="setPostColor('#1f2937', this)" class="color-dot" style="background:#1f2937"></button>
+          </div>
+        </div>
+
+        <button onclick="downloadPostIA()" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold">📥 Baixar Post</button>
+      </div>
+
+      <div class="card-bg rounded-2xl p-6">
+        <h3 class="font-bold text-lg mb-4">Preview (como aparece no feed)</h3>
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500"></div>
+            <div>
+              <p class="font-semibold text-sm">seu_negocio</p>
+              <p class="text-xs text-sec">Patrocinado</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Ferramenta: Cartão de Visita -->
-    <section id="cartao" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">Criar Cartão de Visita</h2>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Controles -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Preencha seus dados:</h3>
-                    
-                    <div class="space-y-3 md:space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome da Empresa</label>
-                            <input type="text" id="cartaoEmpresa" placeholder="Ex: Padaria do João" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCartao()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Seu Nome</label>
-                            <input type="text" id="cartaoNome" placeholder="Ex: João Silva" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCartao()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Telefone/WhatsApp</label>
-                            <input type="text" id="cartaoTelefone" placeholder="Ex: (11) 99999-9999" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCartao()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Endereço (opcional)</label>
-                            <input type="text" id="cartaoEndereco" placeholder="Ex: Rua das Flores, 123" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCartao()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">O que você faz?</label>
-                            <input type="text" id="cartaoServico" placeholder="Ex: Bolos e Doces Artesanais" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCartao()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Cor do cartão</label>
-                            <div class="flex space-x-2 md:space-x-3 flex-wrap gap-2">
-                                <button onclick="selectCartaoColor('#667eea')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-indigo-500 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectCartaoColor('#f093fb')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-pink-400 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectCartaoColor('#4facfe')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-400 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectCartaoColor('#43e97b')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-green-400 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectCartaoColor('#fa709a')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-red-400 hover:scale-110 transition flex-shrink-0"></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button onclick="downloadCartao()" class="w-full mt-4 md:mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition text-sm md:text-base">
-                        Baixar Cartão de Visita
-                    </button>
-                </div>
-                
-                <!-- Preview -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Como vai ficar:</h3>
-                    <div id="cartaoPreview" class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-6 md:p-8 text-white shadow-xl preview-container flex items-center justify-center">
-                        <div class="text-center w-full">
-                            <h4 class="text-xl md:text-2xl font-bold mb-2" id="previewCartaoEmpresa">Sua Empresa</h4>
-                            <p class="text-base md:text-lg mb-4" id="previewCartaoServico">Seu serviço aqui</p>
-                            <div class="border-t border-white/30 pt-4">
-                                <p class="font-semibold" id="previewCartaoNome">Seu Nome</p>
-                                <p class="text-sm" id="previewCartaoTelefone">(00) 00000-0000</p>
-                                <p class="text-sm" id="previewCartaoEndereco">Endereço aqui</p>
-                            </div>
-                            <div class="mt-4 bg-white rounded-lg p-2 inline-block">
-                                <div class="w-12 h-12 md:w-16 md:h-16 bg-gray-800 rounded flex items-center justify-center text-white text-xs">QR Code</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div id="pi-preview" class="aspect-square rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 p-8 text-white flex flex-col justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-wider opacity-80">Novidade</p>
+              <h3 class="text-3xl font-bold mt-2 leading-tight" id="pi-prev-titulo">Seu Título</h3>
             </div>
-        </div>
-    </section>
-
-    <!-- Ferramenta: Banner Redes Sociais -->
-    <section id="banner" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">Criar Banner para Redes Sociais</h2>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Controles -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Escolha o tamanho:</h3>
-                    <div class="grid grid-cols-2 gap-2 md:gap-3 mb-4 md:mb-6">
-                        <button onclick="selectBannerSize('instagram')" class="banner-size-btn p-2 md:p-3 border-2 border-gray-200 rounded-lg hover:border-purple-500 transition text-center text-sm" data-size="instagram">
-                            <div class="font-semibold">Instagram Post</div>
-                            <div class="text-xs text-gray-600">Quadrado</div>
-                        </button>
-                        <button onclick="selectBannerSize('story')" class="banner-size-btn p-2 md:p-3 border-2 border-gray-200 rounded-lg hover:border-purple-500 transition text-center text-sm" data-size="story">
-                            <div class="font-semibold">Stories</div>
-                            <div class="text-xs text-gray-600">Vertical</div>
-                        </button>
-                        <button onclick="selectBannerSize('facebook')" class="banner-size-btn p-2 md:p-3 border-2 border-gray-200 rounded-lg hover:border-purple-500 transition text-center text-sm" data-size="facebook">
-                            <div class="font-semibold">Facebook</div>
-                            <div class="text-xs text-gray-600">Retangular</div>
-                        </button>
-                        <button onclick="selectBannerSize('whatsapp')" class="banner-size-btn p-2 md:p-3 border-2 border-gray-200 rounded-lg hover:border-purple-500 transition text-center text-sm" data-size="whatsapp">
-                            <div class="font-semibold">WhatsApp</div>
-                            <div class="text-xs text-gray-600">Status</div>
-                        </button>
-                    </div>
-                    
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Escolha um modelo:</h3>
-                    <div class="grid grid-cols-2 gap-2 md:gap-3 mb-4 md:mb-6">
-                        <div class="template-card selected p-3 md:p-4 border-2 border-purple-500 rounded-lg bg-gradient-to-br from-purple-100 to-blue-100" onclick="selectBannerTemplate('promo')" data-template="promo">
-                            <div class="text-center">
-                                <div class="text-xl md:text-2xl mb-1 md:mb-2">🏷️</div>
-                                <div class="font-semibold text-xs md:text-sm">Promoção</div>
-                            </div>
-                        </div>
-                        <div class="template-card p-3 md:p-4 border-2 border-gray-200 rounded-lg bg-gradient-to-br from-pink-100 to-red-100" onclick="selectBannerTemplate('novo')" data-template="novo">
-                            <div class="text-center">
-                                <div class="text-xl md:text-2xl mb-1 md:mb-2">✨</div>
-                                <div class="font-semibold text-xs md:text-sm">Novidade</div>
-                            </div>
-                        </div>
-                        <div class="template-card p-3 md:p-4 border-2 border-gray-200 rounded-lg bg-gradient-to-br from-green-100 to-teal-100" onclick="selectBannerTemplate('aberto')" data-template="aberto">
-                            <div class="text-center">
-                                <div class="text-xl md:text-2xl mb-1 md:mb-2">🎉</div>
-                                <div class="font-semibold text-xs md:text-sm">Abertos</div>
-                            </div>
-                        </div>
-                        <div class="template-card p-3 md:p-4 border-2 border-gray-200 rounded-lg bg-gradient-to-br from-yellow-100 to-orange-100" onclick="selectBannerTemplate('obrigado')" data-template="obrigado">
-                            <div class="text-center">
-                                <div class="text-xl md:text-2xl mb-1 md:mb-2">🙏</div>
-                                <div class="font-semibold text-xs md:text-sm">Obrigado</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-3 md:space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Título principal</label>
-                            <input type="text" id="bannerTitulo" placeholder="Ex: PROMOÇÃO ESPECIAL" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateBanner()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Texto complementar</label>
-                            <input type="text" id="bannerTexto" placeholder="Ex: 50% OFF em tudo" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateBanner()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome da empresa</label>
-                            <input type="text" id="bannerEmpresa" placeholder="Ex: Loja da Maria" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateBanner()">
-                        </div>
-                    </div>
-                    
-                    <button onclick="downloadBanner()" class="w-full mt-4 md:mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition text-sm md:text-base">
-                        Baixar Banner
-                    </button>
-                </div>
-                
-                <!-- Preview -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Pré-visualização:</h3>
-                    <div id="bannerPreview" class="bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl p-6 md:p-8 text-white shadow-xl aspect-square flex flex-col justify-center items-center text-center preview-container">
-                        <div class="text-4xl md:text-6xl mb-2 md:mb-4">🏷️</div>
-                        <h3 class="text-xl md:text-3xl font-bold mb-2 md:mb-4" id="previewBannerTitulo">PROMOÇÃO</h3>
-                        <p class="text-base md:text-xl mb-4 md:mb-6" id="previewBannerTexto">Texto aqui</p>
-                        <p class="text-base md:text-lg font-semibold" id="previewBannerEmpresa">Sua Empresa</p>
-                    </div>
-                </div>
+            <div>
+              <p class="text-sm opacity-90" id="pi-preview-sub">Texto persuasivo aqui</p>
+              <div class="mt-4 bg-white/20 backdrop-blur rounded-lg py-2 px-4 inline-block">
+                <p class="text-sm font-semibold">Saiba mais →</p>
+              </div>
             </div>
+          </div>
+          <p class="mt-3 text-sm whitespace-pre-line" id="pi-prev-legenda">Legenda do post aqui...</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Ferramenta: Anúncio -->
-    <section id="anuncio" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">Criar Anúncio de Venda</h2>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Controles -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Dados do anúncio:</h3>
-                    
-                    <div class="space-y-3 md:space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Produto/Serviço</label>
-                            <input type="text" id="anuncioProduto" placeholder="Ex: Bolo de Chocolate" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateAnuncio()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Preço</label>
-                            <input type="text" id="anuncioPreco" placeholder="Ex: R$ 45,00" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateAnuncio()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Descrição curta</label>
-                            <input type="text" id="anuncioDescricao" placeholder="Ex: Ingredientes premium" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateAnuncio()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Contato</label>
-                            <input type="text" id="anuncioContato" placeholder="Ex: WhatsApp: (11) 99999-9999" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateAnuncio()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de anúncio</label>
-                            <div class="grid grid-cols-2 gap-2 md:gap-3">
-                                <button onclick="selectAnuncioType('venda')" class="anuncio-type-btn p-2 md:p-3 border-2 border-purple-500 rounded-lg text-center" data-type="venda">
-                                    <div class="text-xl md:text-2xl mb-1">💰</div>
-                                    <div class="text-xs md:text-sm">Venda</div>
-                                </button>
-                                <button onclick="selectAnuncioType('servico')" class="anuncio-type-btn p-2 md:p-3 border-2 border-gray-200 rounded-lg text-center" data-type="servico">
-                                    <div class="text-xl md:text-2xl mb-1">🔧</div>
-                                    <div class="text-xs md:text-sm">Serviço</div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button onclick="downloadAnuncio()" class="w-full mt-4 md:mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition text-sm md:text-base">
-                        Baixar Anúncio
-                    </button>
-                </div>
-                
-                <!-- Preview -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Pré-visualização:</h3>
-                    <div id="anuncioPreview" class="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl p-6 md:p-8 text-white shadow-xl preview-container flex items-center justify-center">
-                        <div class="text-center w-full">
-                            <div class="text-4xl md:text-5xl mb-2 md:mb-4">💰</div>
-                            <h3 class="text-xl md:text-2xl font-bold mb-2" id="previewAnuncioProduto">Produto</h3>
-                            <p class="text-2xl md:text-3xl font-bold mb-4" id="previewAnuncioPreco">R$ 0,00</p>
-                            <p class="text-base md:text-lg mb-4" id="previewAnuncioDescricao">Descrição aqui</p>
-                            <div class="bg-white text-gray-800 rounded-lg p-2 md:p-3 inline-block">
-                                <p class="font-semibold text-sm md:text-base" id="previewAnuncioContato">Contato aqui</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- FERRAMENTA: BANNER SAZONAL -->
+<section id="banner-sazonal" class="tool-section py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <button onclick="showMenu()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold text-sm">← Voltar ao Menu</button>
+    <h2 class="text-2xl md:text-3xl font-bold mb-2">🎄 Banner Sazonal Automático</h2>
+    <p class="text-sec mb-6">Detecta datas comemorativas e cria banners temáticos</p>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="card-bg rounded-2xl p-6 space-y-4">
+        <div id="seasonalDetected" class="p-4 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 text-white">
+          <p class="text-xs uppercase tracking-wider opacity-80">Detectado automaticamente</p>
+          <h3 class="font-bold text-xl mt-1" id="bs-detect-title">Carregando...</h3>
+          <p class="text-sm opacity-90 mt-1" id="bs-detect-desc">Analisando calendário...</p>
         </div>
-    </section>
 
-    <!-- Ferramenta: Flyer -->
-    <section id="flyer" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">Criar Flyer Digital</h2>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Controles -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Informações do flyer:</h3>
-                    
-                    <div class="space-y-3 md:space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Título do evento/promoção</label>
-                            <input type="text" id="flyerTitulo" placeholder="Ex: Grande Inauguração" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateFlyer()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Data e horário</label>
-                            <input type="text" id="flyerData" placeholder="Ex: Sábado, 20/09 às 14h" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateFlyer()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Local</label>
-                            <input type="text" id="flyerLocal" placeholder="Ex: Rua das Flores, 123" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateFlyer()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Detalhes</label>
-                            <textarea id="flyerDetalhes" placeholder="Ex: Venha conhecer nossa loja!" 
-                                      class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 h-16 md:h-20 text-sm md:text-base"
-                                      oninput="updateFlyer()"></textarea>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Contato</label>
-                            <input type="text" id="flyerContato" placeholder="Ex: (11) 99999-9999" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateFlyer()">
-                        </div>
-                    </div>
-                    
-                    <button onclick="downloadFlyer()" class="w-full mt-4 md:mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition text-sm md:text-base">
-                        Baixar Flyer
-                    </button>
-                </div>
-                
-                <!-- Preview -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Pré-visualização:</h3>
-                    <div id="flyerPreview" class="bg-gradient-to-br from-green-400 to-teal-500 rounded-xl p-6 md:p-8 text-white shadow-xl preview-container flex items-center justify-center">
-                        <div class="text-center w-full">
-                            <div class="text-4xl md:text-5xl mb-2 md:mb-4">🎉</div>
-                            <h3 class="text-2xl md:text-3xl font-bold mb-4" id="previewFlyerTitulo">Título</h3>
-                            <div class="bg-white/20 rounded-lg p-3 md:p-4 mb-4">
-                                <p class="text-base md:text-lg font-semibold mb-2" id="previewFlyerData">Data aqui</p>
-                                <p class="text-base md:text-lg" id="previewFlyerLocal">Local aqui</p>
-                            </div>
-                            <p class="text-base md:text-lg mb-4" id="previewFlyerDetalhes">Detalhes aqui</p>
-                            <div class="bg-white text-gray-800 rounded-lg p-2 md:p-3 inline-block">
-                                <p class="font-semibold text-sm md:text-base" id="previewFlyerContato">Contato aqui</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Ou escolha manualmente:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setSeason('natal')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-red-500 transition text-sm">🎄 Natal</button>
+            <button onclick="setSeason('blackfriday')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-black transition text-sm">🏷️ Black Friday</button>
+            <button onclick="setSeason('maes')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-pink-500 transition text-sm">🌸 Dia das Mães</button>
+            <button onclick="setSeason('namorados')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-red-500 transition text-sm">💕 Namorados</button>
+            <button onclick="setSeason('pascoa')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-yellow-600 transition text-sm">🐰 Páscoa</button>
+            <button onclick="setSeason('junina')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-orange-500 transition text-sm">🔥 Festa Junina</button>
+            <button onclick="setSeason('carnaval')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-purple-500 transition text-sm">🎭 Carnaval</button>
+            <button onclick="setSeason('generico')" class="p-3 rounded-lg border-2 border-gray-300 hover:border-indigo-500 transition text-sm">🎯 Genérico</button>
+          </div>
         </div>
-    </section>
 
-    <!-- Ferramenta: Cardápio/Preços -->
-    <section id="cardapio" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">Criar Cardápio/Lista de Preços</h2>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Controles -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Dados do cardápio:</h3>
-                    
-                    <div class="space-y-3 md:space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome do estabelecimento</label>
-                            <input type="text" id="cardapioNome" placeholder="Ex: Restaurante Sabor Caseiro" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCardapio()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                            <select id="cardapioTipo" class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base" onchange="updateCardapio()">
-                                <option value="restaurante">Restaurante/Lanchonete</option>
-                                <option value="servicos">Serviços</option>
-                                <option value="produtos">Produtos</option>
-                            </select>
-                        </div>
-                        
-                        <div id="itensContainer">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Itens:</label>
-                            <div id="itensLista" class="space-y-2">
-                                <div class="flex space-x-2">
-                                    <input type="text" placeholder="Item" class="item-nome flex-1 px-2 md:px-3 py-2 border border-gray-300 rounded-lg text-sm" oninput="updateCardapio()">
-                                    <input type="text" placeholder="Preço" class="item-preco w-20 md:w-24 px-2 md:px-3 py-2 border border-gray-300 rounded-lg text-sm" oninput="updateCardapio()">
-                                </div>
-                            </div>
-                            <button onclick="addItem()" class="mt-2 text-purple-600 hover:text-purple-800 font-semibold text-xs md:text-sm">+ Adicionar outro item</button>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Telefone/Pedido</label>
-                            <input type="text" id="cardapioContato" placeholder="Ex: (11) 99999-9999" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateCardapio()">
-                        </div>
-                    </div>
-                    
-                    <button onclick="downloadCardapio()" class="w-full mt-4 md:mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition text-sm md:text-base">
-                        Baixar Cardápio
-                    </button>
-                </div>
-                
-                <!-- Preview -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Pré-visualização:</h3>
-                    <div id="cardapioPreview" class="bg-gradient-to-br from-purple-400 to-indigo-500 rounded-xl p-6 md:p-8 text-white shadow-xl preview-container">
-                        <div class="text-center mb-4 md:mb-6">
-                            <h3 class="text-xl md:text-2xl font-bold" id="previewCardapioNome">Nome do Local</h3>
-                            <p class="text-xs md:text-sm opacity-80" id="previewCardapioTipo">Tipo</p>
-                        </div>
-                        <div class="bg-white/10 rounded-lg p-3 md:p-4 mb-4">
-                            <div id="previewItens" class="space-y-2 text-sm md:text-base">
-                                <div class="flex justify-between">
-                                    <span>Item exemplo</span>
-                                    <span>R$ 0,00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <p class="font-semibold text-sm md:text-base" id="previewCardapioContato">Contato aqui</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <input type="text" id="bs-titulo" placeholder="Título (ex: PROMOÇÃO DE NATAL)" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateBannerSazonal()">
+        <input type="text" id="bs-sub" placeholder="Subtítulo/oferta" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateBannerSazonal()">
+        <input type="text" id="bs-empresa" placeholder="Nome da empresa" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateBannerSazonal()">
+
+        <button onclick="downloadBannerSazonal()" class="w-full py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-lg font-semibold">📥 Baixar Banner</button>
+      </div>
+
+      <div class="card-bg rounded-2xl p-6">
+        <h3 class="font-bold text-lg mb-4">Preview</h3>
+        <div id="bs-preview" class="aspect-square rounded-xl bg-gradient-to-br from-red-600 via-red-500 to-green-600 p-8 text-white flex flex-col justify-between overflow-hidden relative">
+          <div class="absolute top-0 right-0 text-9xl opacity-10">🎄</div>
+          <div class="relative">
+            <p class="text-xs uppercase tracking-widest opacity-90" id="bs-prev-tag">Temporada</p>
+            <h3 class="text-4xl font-extrabold mt-3 leading-tight" id="bs-prev-titulo">PROMOÇÃO</h3>
+          </div>
+          <div class="relative">
+            <p class="text-lg mb-4" id="bs-prev-sub">Oferta especial</p>
+            <p class="text-sm font-semibold opacity-90" id="bs-prev-empresa">Sua Empresa</p>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Ferramenta: Logo -->
-    <section id="logo" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">Criar Logotipo</h2>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Controles -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Dados da logo:</h3>
-                    
-                    <div class="space-y-3 md:space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome da empresa</label>
-                            <input type="text" id="logoNome" placeholder="Ex: Minha Empresa" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateLogo()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Slogan (opcional)</label>
-                            <input type="text" id="logoSlogan" placeholder="Ex: Qualidade e confiança" 
-                                   class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm md:text-base"
-                                   oninput="updateLogo()">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Estilo</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="selectLogoStyle('moderno')" class="logo-style-btn p-2 border-2 border-purple-500 rounded-lg text-center text-xs md:text-sm" data-style="moderno">Moderno</button>
-                                <button onclick="selectLogoStyle('classico')" class="logo-style-btn p-2 border-2 border-gray-200 rounded-lg text-center text-xs md:text-sm" data-style="classico">Clássico</button>
-                                <button onclick="selectLogoStyle('minimalista')" class="logo-style-btn p-2 border-2 border-gray-200 rounded-lg text-center text-xs md:text-sm" data-style="minimalista">Minimalista</button>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Cor principal</label>
-                            <div class="flex space-x-2 md:space-x-3 flex-wrap gap-2">
-                                <button onclick="selectLogoColor('#667eea')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-indigo-500 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectLogoColor('#f093fb')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-pink-400 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectLogoColor('#4facfe')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-400 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectLogoColor('#43e97b')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-green-400 hover:scale-110 transition flex-shrink-0"></button>
-                                <button onclick="selectLogoColor('#fa709a')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-red-400 hover:scale-110 transition flex-shrink-0"></button>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Ícone</label>
-                            <div class="grid grid-cols-4 gap-2">
-                                <button onclick="selectLogoIcon('⭐')" class="logo-icon-btn p-2 border-2 border-purple-500 rounded-lg text-center text-lg" data-icon="⭐">⭐</button>
-                                <button onclick="selectLogoIcon('🚀')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="🚀">🚀</button>
-                                <button onclick="selectLogoIcon('💎')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="💎">💎</button>
-                                <button onclick="selectLogoIcon('👑')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="👑">👑</button>
-                                <button onclick="selectLogoIcon('❤️')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="❤️">❤️</button>
-                                <button onclick="selectLogoIcon('🍃')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="🍃">🍃</button>
-                                <button onclick="selectLogoIcon('⚡')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="⚡">⚡</button>
-                                <button onclick="selectLogoIcon('')" class="logo-icon-btn p-2 border-2 border-gray-200 rounded-lg text-center text-lg" data-icon="">❌</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button onclick="downloadLogo()" class="w-full mt-4 md:mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition text-sm md:text-base">
-                        Baixar Logo
-                    </button>
-                </div>
-                
-                <!-- Preview -->
-                <div class="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <h3 class="text-lg md:text-xl font-semibold mb-4">Pré-visualização:</h3>
-                    <div id="logoPreview" class="bg-gray-100 rounded-xl p-6 md:p-8 shadow-xl flex items-center justify-center preview-container">
-                        <div class="text-center">
-                            <div class="text-5xl md:text-6xl mb-4" id="previewLogoIcon">⭐</div>
-                            <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2" id="previewLogoNome">Sua Empresa</h3>
-                            <p class="text-gray-600 text-sm md:text-base" id="previewLogoSlogan">Seu slogan aqui</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- FERRAMENTA: MENU COM PIX QR -->
+<section id="menu-pix" class="tool-section py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <button onclick="showMenu()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold text-sm">← Voltar ao Menu</button>
+    <h2 class="text-2xl md:text-3xl font-bold mb-2">💳 Menu com QR de Pix</h2>
+    <p class="text-sec mb-6">Cardápio profissional com QR code para pagamento instantâneo</p>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="card-bg rounded-2xl p-6 space-y-4">
+        <input type="text" id="mp-nome" placeholder="Nome do estabelecimento" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateMenuPix()">
+        <input type="text" id="mp-pix" placeholder="Chave Pix (CPF, email, telefone)" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateMenuPix()">
+        <input type="text" id="mp-titular" placeholder="Nome do titular" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent" oninput="updateMenuPix()">
+        
+        <div>
+          <label class="block text-sm font-medium mb-2">Itens do cardápio</label>
+          <div id="mp-itens" class="space-y-2"></div>
+          <button onclick="addItemMP()" class="mt-2 text-indigo-600 font-semibold text-sm">+ Adicionar item</button>
         </div>
-    </section>
 
-    <!-- Glossário/Como Usar -->
-    <section id="glossario" class="tool-section py-8 md:py-12 bg-gray-50">
-        <div class="container mx-auto px-4 max-w-4xl">
-            <button onclick="showMenu()" class="mb-4 md:mb-6 text-purple-600 hover:text-purple-800 font-semibold text-sm md:text-base">← Voltar ao Menu</button>
-            
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8">📖 Como Usar - Guia Simples</h2>
-            
-            <div class="bg-white rounded-2xl p-4 md:p-8 shadow-lg space-y-4 md:space-y-6">
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold text-purple-600 mb-2 md:mb-3">🤔 O que é isso?</h3>
-                    <p class="text-gray-700 text-sm md:text-base">É um conjunto de ferramentas de graça para você fazer coisas bonitas para seu negócio, sem precisar pagar caro para empresas de marketing.</p>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold text-purple-600 mb-2 md:mb-3">📝 Passo a passo simples:</h3>
-                    <ol class="text-gray-700 space-y-2 list-decimal list-inside text-sm md:text-base">
-                        <li>Clique no botão do que você quer criar (cartão, banner, etc.)</li>
-                        <li>Preencha as informações nos campos (nome, telefone, preço, etc.)</li>
-                        <li>Escolha as cores e o estilo que você gostar</li>
-                        <li>Veja como fica na pré-visualização do lado direito</li>
-                        <li>Clique em "Baixar" para salvar no seu celular ou computador</li>
-                        <li>Pronto! Agora é só usar nas redes sociais ou mandar para os clientes</li>
-                    </ol>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold text-purple-600 mb-2 md:mb-3">💡 Dicas importantes:</h3>
-                    <ul class="text-gray-700 space-y-2 text-sm md:text-base">
-                        <li>• Use nomes curtos e fáceis de lembrar</li>
-                        <li>• Coloque sempre seu telefone ou WhatsApp</li>
-                        <li>• Use cores que combinem com seu negócio</li>
-                        <li>• Não encha demais de texto - menos é mais!</li>
-                        <li>• Salve as imagens para usar depois</li>
-                        <li>• Você pode fazer quantas vezes quiser, é tudo de graça!</li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold text-purple-600 mb-2 md:mb-3">❓ Perguntas comuns:</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <p class="font-semibold text-gray-800 text-sm md:text-base">Preciso saber mexer em computador?</p>
-                            <p class="text-gray-700 text-sm md:text-base">Não! É bem simples, igual preencher um formulário.</p>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800 text-sm md:text-base">É pago?</p>
-                            <p class="text-gray-700 text-sm md:text-base">Não! É tudo de graça, sem pegadinha.</p>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800 text-sm md:text-base">Posso usar para meu negócio?</p>
-                            <p class="text-gray-700 text-sm md:text-base">Sim! Foi feito exatamente para isso.</p>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800 text-sm md:text-base">Onde salvo as imagens?</p>
-                            <p class="text-gray-700 text-sm md:text-base">Elas vão para a pasta de downloads do seu celular ou computador.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg md:text-xl font-semibold text-purple-600 mb-2 md:mb-3">🎯 Para que serve cada ferramenta:</h3>
-                    <div class="grid md:grid-cols-2 gap-3 md:gap-4">
-                        <div class="bg-blue-50 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-semibold text-blue-800 mb-2 text-sm md:text-base">💳 Cartão de Visita</h4>
-                            <p class="text-xs md:text-sm text-blue-700">Para dar aos clientes com seus contatos. Pode mandar pelo WhatsApp também!</p>
-                        </div>
-                        <div class="bg-pink-50 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-semibold text-pink-800 mb-2 text-sm md:text-base">📱 Banner para Redes</h4>
-                            <p class="text-xs md:text-sm text-pink-700">Para postar no Instagram, Facebook ou status do WhatsApp.</p>
-                        </div>
-                        <div class="bg-yellow-50 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-semibold text-yellow-800 mb-2 text-sm md:text-base">🏷️ Anúncio de Venda</h4>
-                            <p class="text-xs md:text-sm text-yellow-700">Para divulgar produtos ou serviços com preço.</p>
-                        </div>
-                        <div class="bg-green-50 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-semibold text-green-800 mb-2 text-sm md:text-base">📄 Flyer Digital</h4>
-                            <p class="text-xs md:text-sm text-green-700">Para convidar pessoas para eventos ou promoções.</p>
-                        </div>
-                        <div class="bg-purple-50 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-semibold text-purple-800 mb-2 text-sm md:text-base">📋 Cardápio/Preços</h4>
-                            <p class="text-xs md:text-sm text-purple-700">Para mostrar seus produtos e preços de forma organizada.</p>
-                        </div>
-                        <div class="bg-gray-50 p-3 md:p-4 rounded-lg">
-                            <h4 class="font-semibold text-gray-800 mb-2 text-sm md:text-base">⭐ Logotipo</h4>
-                            <p class="text-xs md:text-sm text-gray-700">Para criar a marca da sua empresa.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <button onclick="downloadMenuPix()" class="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold">📥 Baixar Cardápio</button>
+      </div>
+
+      <div class="card-bg rounded-2xl p-6">
+        <h3 class="font-bold text-lg mb-4">Preview</h3>
+        <div id="mp-preview" class="rounded-xl bg-gradient-to-br from-green-600 to-emerald-700 p-6 text-white aspect-[3/4]">
+          <div class="text-center mb-4">
+            <h3 class="text-2xl font-bold" id="mp-prev-nome">Seu Restaurante</h3>
+            <p class="text-xs opacity-80">Cardápio Digital</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-lg p-3 mb-4">
+            <div id="mp-prev-itens" class="space-y-2"></div>
+          </div>
+          <div class="bg-white rounded-lg p-4 text-gray-900">
+            <p class="text-xs text-center text-gray-500 mb-2">PAGUE COM PIX</p>
+            <div id="mp-prev-qr" class="flex justify-center mb-2"></div>
+            <p class="text-xs text-center" id="mp-prev-titular">Titular</p>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-6 md:py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400 text-sm md:text-base">MarketingKit - Ferramentas grátis para pequenos negócios</p>
-            <p class="text-gray-500 text-xs md:text-sm mt-2">Feito com ❤️ para ajudar empreendedores</p>
-        </div>
-    </footer>
+<!-- Ferramentas clássicas (mantidas mas simplificadas) -->
+<section id="cartao" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Ferramenta clássica - use <strong>Cartão Digital QR</strong> para versão com QR real</p></div></section>
+<section id="banner" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Use <strong>Banner Sazonal</strong> ou <strong>Post com Copy IA</strong> para versões inteligentes</p></div></section>
+<section id="anuncio" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Use <strong>Post com Copy IA</strong> com tipo "Promoção" para anúncios com CTA</p></div></section>
+<section id="story" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Use <strong>Post com Copy IA</strong> com formato Story</p></div></section>
+<section id="flyer" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Use <strong>Banner Sazonal</strong> ou <strong>Post com Copy IA</strong></p></div></section>
+<section id="cardapio" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Use <strong>Menu + QR Pix</strong> para versão moderna</p></div></section>
+<section id="logo" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Ferramenta em desenvolvimento - em breve com IA</p></div></section>
+<section id="assinatura" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4"><p class="text-center text-sec py-12">Em breve - assinatura de email profissional</p></div></section>
 
-    <script>
-        // Variáveis globais
-        let cartaoColor = '#667eea';
-        let bannerSize = 'instagram';
-        let bannerTemplate = 'promo';
-        let anuncioType = 'venda';
-        let logoStyle = 'moderno';
-        let logoColor = '#667eea';
-        let logoIcon = '⭐';
+<!-- Histórico -->
+<section id="history" class="tool-section py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <button onclick="showMenu()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold text-sm">← Voltar ao Menu</button>
+    <h2 class="text-2xl md:text-3xl font-bold mb-6">📜 Histórico de Criações</h2>
+    <div id="historyList" class="space-y-2"></div>
+    <button onclick="clearHistory()" class="mt-4 text-red-500 text-sm">Limpar histórico</button>
+  </div>
+</section>
 
-        // Navegação
-        function showMenu() {
-            document.querySelectorAll('.tool-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('mainMenu').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
+<!-- Ajuda -->
+<section id="help" class="tool-section py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <button onclick="showMenu()" class="mb-4 text-indigo-600 hover:text-indigo-800 font-semibold text-sm">← Voltar ao Menu</button>
+    <h2 class="text-2xl md:text-3xl font-bold mb-6">📖 Como Usar</h2>
+    <div class="card-bg rounded-2xl p-6 space-y-4">
+      <div>
+        <h3 class="font-bold text-lg mb-2">🎯 Escolha sua ferramenta</h3>
+        <p class="text-sec">Cada ferramenta é especializada: Cartão Digital gera QR real, Post com Copy IA escreve textos, Banner Sazonal detecta datas automaticamente.</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-2">🎨 IA local ajuda você</h3>
+        <p class="text-sec">Selecione seu nicho e a ferramenta sugere paletas de cores que combinam. Digite o produto e ela escreve 3 opções de texto persuasivo.</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-2">📥 Exporte em vários formatos</h3>
+        <p class="text-sec">PNG para redes sociais, PDF para imprimir, link para compartilhar - tudo direto no seu celular.</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg mb-2">🔒 100% privado</h3>
+        <p class="text-sec">Nada é enviado para servidor. Tudo roda no seu navegador, seus dados ficam no seu aparelho.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function showTool(tool) {
-            document.getElementById('mainMenu').style.display = 'none';
-            document.querySelectorAll('.tool-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(tool).classList.add('active');
-            window.scrollTo(0, 0);
-        }
+<div id="toast" class="toast"></div>
 
-        function showHelp() {
-            showTool('glossario');
-        }
+<footer class="py-8 text-center text-sec text-sm">
+  <p>MarketingKit Pro · 100% grátis e sem cadastro</p>
+  <p class="mt-1 text-xs">Feito com ❤️ para empreendedores brasileiros</p>
+</footer>
 
-        // Cartão de Visita
-        function selectCartaoColor(color) {
-            cartaoColor = color;
-            updateCartao();
-        }
+<script>
+// ============ ESTADO GLOBAL ============
+const state = {
+  niche: 'geral',
+  qrType: 'whatsapp',
+  palette: ['#6366f1', '#8b5cf6', '#a78bfa'],
+  postColor: '#6366f1',
+  season: 'generico',
+  history: JSON.parse(localStorage.getItem('mk_history') || '[]')
+};
 
-        function updateCartao() {
-            const empresa = document.getElementById('cartaoEmpresa').value || 'Sua Empresa';
-            const nome = document.getElementById('cartaoNome').value || 'Seu Nome';
-            const telefone = document.getElementById('cartaoTelefone').value || '(00) 00000-0000';
-            const endereco = document.getElementById('cartaoEndereco').value || 'Endereço aqui';
-            const servico = document.getElementById('cartaoServico').value || 'Seu serviço aqui';
-            
-            document.getElementById('previewCartaoEmpresa').textContent = empresa;
-            document.getElementById('previewCartaoNome').textContent = nome;
-            document.getElementById('previewCartaoTelefone').textContent = telefone;
-            document.getElementById('previewCartaoEndereco').textContent = endereco;
-            document.getElementById('previewCartaoServico').textContent = servico;
-            
-            const preview = document.getElementById('cartaoPreview');
-            preview.style.background = `linear-gradient(135deg, ${cartaoColor}, ${adjustColor(cartaoColor, -30)})`;
-        }
+// ============ PALETAS POR NICHO ============
+const palettes = {
+  geral: [['#6366f1', '#8b5cf6', '#a78bfa'], ['#0f172a', '#475569', '#94a3b8']],
+  restaurante: [['#dc2626', '#f59e0b', '#fbbf24'], ['#78350f', '#b45309', '#f59e0b']],
+  beleza: [['#ec4899', '#f472b6', '#fce7f3'], ['#be185d', '#db2777', '#ec4899']],
+  tech: [['#0ea5e9', '#3b82f6', '#6366f1'], ['#0f172a', '#1e40af', '#3b82f6']],
+  fitness: [['#10b981', '#14b8a6', '#06b6d4'], ['#052e16', '#065f46', '#10b981']],
+  moda: [['#1f2937', '#78716c', '#d6d3d1'], ['#831843', '#be185d', '#ec4899']]
+};
 
-        function downloadCartao() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 1050;
-            canvas.height = 600;
-            
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, cartaoColor);
-            gradient.addColorStop(1, adjustColor(cartaoColor, -40));
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            
-            const empresa = document.getElementById('cartaoEmpresa').value || 'Sua Empresa';
-            const nome = document.getElementById('cartaoNome').value || 'Seu Nome';
-            const telefone = document.getElementById('cartaoTelefone').value || '(00) 00000-0000';
-            const endereco = document.getElementById('cartaoEndereco').value || '';
-            const servico = document.getElementById('cartaoServico').value || '';
-            
-            ctx.font = 'bold 48px Arial';
-            ctx.fillText(empresa, canvas.width / 2, 150);
-            
-            ctx.font = '32px Arial';
-            ctx.fillText(servico, canvas.width / 2, 210);
-            
-            ctx.font = '28px Arial';
-            ctx.fillText(nome, canvas.width / 2, 320);
-            ctx.fillText(telefone, canvas.width / 2, 370);
-            if (endereco) ctx.fillText(endereco, canvas.width / 2, 420);
-            
-            ctx.fillStyle = 'white';
-            ctx.fillRect(canvas.width / 2 - 60, 460, 120, 120);
-            ctx.fillStyle = 'black';
-            ctx.font = '16px Arial';
-            ctx.fillText('QR Code', canvas.width / 2, 530);
-            
-            const link = document.createElement('a');
-            link.download = 'cartao-de-visita.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+// ============ COPY IA (TEMPLATES LOCAIS) ============
+const copyTemplates = {
+  promo: [
+    "🔥 {produto} com {oferta}!\n\n{beneficio} - perfeito para {publico}.\n\nNão perca, oferta por tempo limitado. 💨",
+    "✨ {publico}, atenção!\n\n{produto} agora com {oferta}.\n\n{beneficio} de verdade, sem enrolação.",
+    "🎉 PROMOÇÃO IMPERDÍVEL\n\n{produto} · {beneficio}\n\n👉 {oferta}\n\nCorre que acaba rápido!"
+  ],
+  lancamento: [
+    "🚀 ACABOU DE CHEGAR!\n\nApresentando {produto}\n\n{beneficio} - feito pensando em {publico}.",
+    "✨ NOVIDADE que você esperava!\n\n{produto} já está disponível.\n\n{beneficio} em um só lugar.",
+    "🎯 CHEGOU {produto}\n\nPara {publico} que busca {beneficio}.\n\n{oferta}"
+  ],
+  depoimento: [
+    "⭐⭐⭐⭐⭐\n\n\"{beneficio} - mudou minha vida!\"\n\n- Cliente satisfeito\n\n{produto} para {publico}.",
+    "💬 O que dizem sobre {produto}:\n\n\"{beneficio}\"\n\n{publico} já aprovou. E você?",
+    "✨ História real\n\n{publico} descobriu {produto} e hoje tem {beneficio}.\n\nSua vez! {oferta}"
+  ],
+  dica: [
+    "💡 DICA DE OURO\n\nVocê sabia que {beneficio}?\n\nCom {produto}, {publico} consegue isso fácil.",
+    "📚 {publico}, atenção!\n\n3 motivos para conhecer {produto}:\n\n1. {beneficio}\n2. Resultado real\n3. {oferta}",
+    "🎓 VOCÊ SABIA?\n\n{beneficio} é mais fácil com {produto}.\n\nDescubra como!"
+  ],
+  urgencia: [
+    "⏰ ÚLTIMAS HORAS!\n\n{produto} com {oferta} só até hoje.\n\n{beneficio} - não deixe passar.",
+    "🚨 ATENÇÃO {publico}!\n\nAcaba HOJE: {produto}\n\n{beneficio} · {oferta}",
+    "⚡ CORRE!\n\nRestam poucas unidades de {produto}.\n\n{beneficio} por {oferta}."
+  ]
+};
 
-        // Banner
-        function selectBannerSize(size) {
-            bannerSize = size;
-            document.querySelectorAll('.banner-size-btn').forEach(btn => {
-                btn.classList.remove('border-purple-500');
-                if (btn.dataset.size === size) btn.classList.add('border-purple-500');
-            });
-            updateBannerPreview();
-        }
+// ============ SAZONALIDADE ============
+const seasons = {
+  natal: { title: 'Natal', desc: 'Dezembro mágico', emoji: '🎄', colors: ['#dc2626', '#16a34a', '#fbbf24'], gradient: 'from-red-600 via-red-500 to-green-600' },
+  blackfriday: { title: 'Black Friday', desc: 'Maior liquidação', emoji: '🏷️', colors: ['#000', '#fbbf24', '#dc2626'], gradient: 'from-gray-900 via-black to-yellow-600' },
+  maes: { title: 'Dia das Mães', desc: 'Homenageie quem te ama', emoji: '🌸', colors: ['#ec4899', '#f472b6', '#fce7f3'], gradient: 'from-pink-500 via-rose-400 to-pink-300' },
+  namorados: { title: 'Dia dos Namorados', desc: '12 de junho', emoji: '💕', colors: ['#dc2626', '#ec4899', '#f472b6'], gradient: 'from-red-500 via-pink-500 to-rose-400' },
+  pascoa: { title: 'Páscoa', desc: 'Tempo de renovação', emoji: '🐰', colors: ['#fbbf24', '#a16207', '#854d0e'], gradient: 'from-yellow-500 via-amber-500 to-yellow-700' },
+  junina: { title: 'Festa Junina', desc: 'São João!', emoji: '🔥', colors: ['#ea580c', '#f59e0b', '#dc2626'], gradient: 'from-orange-600 via-yellow-500 to-red-600' },
+  carnaval: { title: 'Carnaval', desc: 'Folia e alegria', emoji: '🎭', colors: ['#7c3aed', '#ec4899', '#fbbf24'], gradient: 'from-purple-600 via-pink-500 to-yellow-500' },
+  generico: { title: 'Promoção', desc: 'Qualquer ocasião', emoji: '🎯', colors: ['#6366f1', '#8b5cf6', '#ec4899'], gradient: 'from-indigo-600 via-purple-600 to-pink-600' }
+};
 
-        function selectBannerTemplate(template) {
-            bannerTemplate = template;
-            document.querySelectorAll('.template-card').forEach(card => {
-                card.classList.remove('selected', 'border-purple-500');
-                card.classList.add('border-gray-200');
-                if (card.dataset.template === template) {
-                    card.classList.add('selected', 'border-purple-500');
-                    card.classList.remove('border-gray-200');
-                }
-            });
-            updateBanner();
-        }
+// ============ NAVEGAÇÃO ============
+function showMenu() {
+  document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('mainMenu').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function showTool(id) {
+  document.getElementById('mainMenu').style.display = 'none';
+  document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'cartao-digital') initCartaoDigital();
+  if (id === 'post-ia') generateCopy();
+  if (id === 'banner-sazonal') detectSeason();
+  if (id === 'menu-pix') initMenuPix();
+}
+function showHistory() { showTool('history'); renderHistory(); }
+function showHelp() { showTool('help'); }
 
-        function updateBanner() {
-            const titulo = document.getElementById('bannerTitulo').value || 'PROMOÇÃO';
-            const texto = document.getElementById('bannerTexto').value || 'Texto aqui';
-            const empresa = document.getElementById('bannerEmpresa').value || 'Sua Empresa';
-            
-            document.getElementById('previewBannerTitulo').textContent = titulo;
-            document.getElementById('previewBannerTexto').textContent = texto;
-            document.getElementById('previewBannerEmpresa').textContent = empresa;
-            
-            updateBannerPreview();
-        }
+// ============ DARK MODE ============
+function toggleDark() {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('mk_dark', document.documentElement.classList.contains('dark'));
+}
+if (localStorage.getItem('mk_dark') === 'true') document.documentElement.classList.add('dark');
 
-        function updateBannerPreview() {
-            const preview = document.getElementById('bannerPreview');
-            const icons = { promo: '🏷️', novo: '✨', aberto: '🎉', obrigado: '🙏' };
-            preview.querySelector('.text-4xl, .text-6xl').textContent = icons[bannerTemplate] || '🏷️';
-            
-            preview.className = 'rounded-xl p-6 md:p-8 text-white shadow-xl flex flex-col justify-center items-center text-center preview-container';
-            if (bannerSize === 'story' || bannerSize === 'whatsapp') {
-                preview.style.aspectRatio = '9/16';
-            } else if (bannerSize === 'facebook') {
-                preview.style.aspectRatio = '1.91/1';
-            } else {
-                preview.style.aspectRatio = '1/1';
-            }
-        }
+// ============ TOAST ============
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
 
-        function downloadBanner() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            let width = 1080, height = 1080;
-            if (bannerSize === 'story' || bannerSize === 'whatsapp') {
-                width = 1080; height = 1920;
-            } else if (bannerSize === 'facebook') {
-                width = 1200; height = 630;
-            }
-            
-            canvas.width = width;
-            canvas.height = height;
-            
-            const gradient = ctx.createLinearGradient(0, 0, width, height);
-            gradient.addColorStop(0, '#667eea');
-            gradient.addColorStop(1, '#764ba2');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, width, height);
-            
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            
-            const icons = { promo: '🏷️', novo: '✨', aberto: '🎉', obrigado: '🙏' };
-            ctx.font = '120px Arial';
-            ctx.fillText(icons[bannerTemplate] || '🏷️', width / 2, height * 0.3);
-            
-            const titulo = document.getElementById('bannerTitulo').value || 'PROMOÇÃO';
-            ctx.font = 'bold 80px Arial';
-            ctx.fillText(titulo, width / 2, height * 0.5);
-            
-            const texto = document.getElementById('bannerTexto').value || '';
-            ctx.font = '50px Arial';
-            ctx.fillText(texto, width / 2, height * 0.65);
-            
-            const empresa = document.getElementById('bannerEmpresa').value || '';
-            ctx.font = '40px Arial';
-            ctx.fillText(empresa, width / 2, height * 0.85);
-            
-            const link = document.createElement('a');
-            link.download = `banner-${bannerSize}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+// ============ NICHO & PALETAS ============
+function selectNiche(niche, el) {
+  state.niche = niche;
+  document.querySelectorAll('.niche-chip').forEach(c => c.classList.remove('active', 'bg-indigo-600', 'text-white'));
+  el.classList.add('active', 'bg-indigo-600', 'text-white');
+  renderPalette();
+}
+function renderPalette() {
+  const pal = palettes[state.niche] || palettes.geral;
+  const container = document.getElementById('paletteColors');
+  container.innerHTML = '';
+  pal.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'flex gap-1 p-1 rounded-lg cursor-pointer border-2 ' + (i === 0 ? 'border-indigo-500' : 'border-transparent');
+    div.innerHTML = p.map(c => `<div style="background:${c}" class="w-6 h-6 rounded"></div>`).join('');
+    div.onclick = () => {
+      state.palette = p;
+      container.querySelectorAll('div').forEach(d => d.classList.remove('border-indigo-500'));
+      container.querySelectorAll('div').forEach(d => d.classList.add('border-transparent'));
+      div.classList.remove('border-transparent');
+      div.classList.add('border-indigo-500');
+      updateCartaoDigital();
+    };
+    container.appendChild(div);
+  });
+  document.getElementById('paletteHint').textContent = `Paletas sugeridas para: ${state.niche}`;
+}
 
-        // Anúncio
-        function selectAnuncioType(type) {
-            anuncioType = type;
-            document.querySelectorAll('.anuncio-type-btn').forEach(btn => {
-                btn.classList.remove('border-purple-500');
-                btn.classList.add('border-gray-200');
-                if (btn.dataset.type === type) {
-                    btn.classList.add('border-purple-500');
-                    btn.classList.remove('border-gray-200');
-                }
-            });
-            updateAnuncio();
-        }
+// ============ CARTÃO DIGITAL ============
+function initCartaoDigital() {
+  if (!document.querySelector('.niche-chip.active')) {
+    document.querySelector('.niche-chip').click();
+  }
+  addItemMP();
+}
+function selectQRType(type, el) {
+  state.qrType = type;
+  document.querySelectorAll('.qr-type-btn').forEach(b => {
+    b.classList.remove('border-indigo-500', 'bg-indigo-50');
+    b.classList.add('border-gray-300');
+  });
+  el.classList.remove('border-gray-300');
+  el.classList.add('border-indigo-500', 'bg-indigo-50');
+  updateCartaoDigital();
+}
+function generateQR(text, container) {
+  if (!text) { container.innerHTML = '<p class="text-gray-400 text-xs text-center">Dados em branco</p>'; return; }
+  try {
+    const qr = qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    container.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 1, scalable: true });
+    const svg = container.querySelector('svg');
+    if (svg) { svg.style.width = '100%'; svg.style.height = '100%'; }
+  } catch (e) {
+    container.innerHTML = '<p class="text-gray-400 text-xs text-center">Erro no QR</p>';
+  }
+}
+function updateCartaoDigital() {
+  const nome = document.getElementById('cd-nome').value || 'Sua Empresa';
+  const prof = document.getElementById('cd-profissao').value || 'Sua profissão';
+  const wpp = document.getElementById('cd-whatsapp').value;
+  const insta = document.getElementById('cd-instagram').value;
+  const pix = document.getElementById('cd-pix').value;
 
-        function updateAnuncio() {
-            const produto = document.getElementById('anuncioProduto').value || 'Produto';
-            const preco = document.getElementById('anuncioPreco').value || 'R$ 0,00';
-            const descricao = document.getElementById('anuncioDescricao').value || 'Descrição aqui';
-            const contato = document.getElementById('anuncioContato').value || 'Contato aqui';
-            
-            document.getElementById('previewAnuncioProduto').textContent = produto;
-            document.getElementById('previewAnuncioPreco').textContent = preco;
-            document.getElementById('previewAnuncioDescricao').textContent = descricao;
-            document.getElementById('previewAnuncioContato').textContent = contato;
-            
-            const icon = anuncioType === 'venda' ? '💰' : '🔧';
-            document.querySelector('#anuncioPreview .text-4xl, #anuncioPreview .text-5xl').textContent = icon;
-        }
+  document.getElementById('cd-prev-nome').textContent = nome;
+  document.getElementById('cd-prev-prof').textContent = prof;
+  document.getElementById('cd-prev-wpp-txt').textContent = wpp || 'WhatsApp';
+  document.getElementById('cd-prev-insta-txt').textContent = insta || '@instagram';
 
-        function downloadAnuncio() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 1080;
-            canvas.height = 1080;
-            
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#fbbf24');
-            gradient.addColorStop(1, '#f59e0b');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            
-            const icon = anuncioType === 'venda' ? '💰' : '🔧';
-            ctx.font = '120px Arial';
-            ctx.fillText(icon, canvas.width / 2, 250);
-            
-            const produto = document.getElementById('anuncioProduto').value || 'Produto';
-            ctx.font = 'bold 70px Arial';
-            ctx.fillText(produto, canvas.width / 2, 400);
-            
-            const preco = document.getElementById('anuncioPreco').value || 'R$ 0,00';
-            ctx.font = 'bold 90px Arial';
-            ctx.fillText(preco, canvas.width / 2, 550);
-            
-            const descricao = document.getElementById('anuncioDescricao').value || '';
-            ctx.font = '45px Arial';
-            ctx.fillText(descricao, canvas.width / 2, 650);
-            
-            const contato = document.getElementById('anuncioContato').value || '';
-            ctx.fillStyle = '#1f2937';
-            ctx.fillRect(canvas.width / 2 - 300, 750, 600, 100);
-            ctx.fillStyle = 'white';
-            ctx.font = '40px Arial';
-            ctx.fillText(contato, canvas.width / 2, 820);
-            
-            const link = document.createElement('a');
-            link.download = 'anuncio.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+  let qrText = '';
+  if (state.qrType === 'whatsapp' && wpp) {
+    const num = wpp.replace(/\D/g, '');
+    qrText = num.length >= 10 ? `https://wa.me/55${num}` : `https://wa.me/${num}`;
+  } else if (state.qrType === 'pix' && pix) {
+    qrText = pix;
+  } else if (state.qrType === 'maps') {
+    qrText = `https://maps.google.com/?q=${encodeURIComponent(nome)}`;
+  }
+  generateQR(qrText, document.getElementById('cd-prev-qr'));
 
-        // Flyer
-        function updateFlyer() {
-            const titulo = document.getElementById('flyerTitulo').value || 'Título';
-            const data = document.getElementById('flyerData').value || 'Data aqui';
-            const local = document.getElementById('flyerLocal').value || 'Local aqui';
-            const detalhes = document.getElementById('flyerDetalhes').value || 'Detalhes aqui';
-            const contato = document.getElementById('flyerContato').value || 'Contato aqui';
-            
-            document.getElementById('previewFlyerTitulo').textContent = titulo;
-            document.getElementById('previewFlyerData').textContent = data;
-            document.getElementById('previewFlyerLocal').textContent = local;
-            document.getElementById('previewFlyerDetalhes').textContent = detalhes;
-            document.getElementById('previewFlyerContato').textContent = contato;
-        }
+  const [c1, c2] = state.palette;
+  document.getElementById('cd-preview').style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+}
+async function downloadCartaoDigital(format) {
+  const preview = document.getElementById('cd-preview');
+  const canvas = await html2canvas(preview, { scale: 3, backgroundColor: null });
+  if (format === 'pdf') {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const img = canvas.toDataURL('image/png');
+    pdf.addImage(img, 'PNG', 20, 20, 170, 300);
+    pdf.save('cartao-digital.pdf');
+  } else {
+    const link = document.createElement('a');
+    link.download = 'cartao-digital.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  }
+  saveHistory('cartao-digital', document.getElementById('cd-nome').value || 'Cartão');
+  toast('✅ Cartão baixado!');
+}
+function shareCartaoDigital() {
+  const data = {
+    n: document.getElementById('cd-nome').value,
+    p: document.getElementById('cd-profissao').value,
+    w: document.getElementById('cd-whatsapp').value,
+    i: document.getElementById('cd-instagram').value,
+    x: document.getElementById('cd-pix').value
+  };
+  const hash = btoa(JSON.stringify(data));
+  const url = `${location.origin}${location.pathname}#card=${hash}`;
+  navigator.clipboard.writeText(url).then(() => toast('🔗 Link copiado!'));
+}
 
-        function downloadFlyer() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 1080;
-            canvas.height = 1920;
-            
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#10b981');
-            gradient.addColorStop(1, '#059669');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            
-            ctx.font = '100px Arial';
-            ctx.fillText('🎉', canvas.width / 2, 300);
-            
-            const titulo = document.getElementById('flyerTitulo').value || 'Título';
-            ctx.font = 'bold 80px Arial';
-            ctx.fillText(titulo, canvas.width / 2, 500);
-            
-            const data = document.getElementById('flyerData').value || '';
-            const local = document.getElementById('flyerLocal').value || '';
-            ctx.font = '50px Arial';
-            ctx.fillText(data, canvas.width / 2, 700);
-            ctx.fillText(local, canvas.width / 2, 800);
-            
-            const detalhes = document.getElementById('flyerDetalhes').value || '';
-            ctx.font = '40px Arial';
-            wrapText(ctx, detalhes, canvas.width / 2, 1000, canvas.width - 200, 60);
-            
-            const contato = document.getElementById('flyerContato').value || '';
-            ctx.fillStyle = '#1f2937';
-            ctx.fillRect(canvas.width / 2 - 300, 1500, 600, 120);
-            ctx.fillStyle = 'white';
-            ctx.font = '45px Arial';
-            ctx.fillText(contato, canvas.width / 2, 1580);
-            
-            const link = document.createElement('a');
-            link.download = 'flyer.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+// ============ POST COM COPY IA ============
+function generateCopy() {
+  const tipo = document.getElementById('pi-tipo').value;
+  const produto = document.getElementById('pi-produto').value || 'seu produto';
+  const beneficio = document.getElementById('pi-beneficio').value || 'resultado incrível';
+  const publico = document.getElementById('pi-publico').value || 'você';
+  const oferta = document.getElementById('pi-oferta').value || 'oferta especial';
 
-        // Cardápio
-        function addItem() {
-            const container = document.getElementById('itensLista');
-            const div = document.createElement('div');
-            div.className = 'flex space-x-2';
-            div.innerHTML = `
-                <input type="text" placeholder="Item" class="item-nome flex-1 px-2 md:px-3 py-2 border border-gray-300 rounded-lg text-sm" oninput="updateCardapio()">
-                <input type="text" placeholder="Preço" class="item-preco w-20 md:w-24 px-2 md:px-3 py-2 border border-gray-300 rounded-lg text-sm" oninput="updateCardapio()">
-                <button onclick="this.parentElement.remove(); updateCardapio();" class="text-red-500 hover:text-red-700 text-lg">✕</button>
-            `;
-            container.appendChild(div);
-        }
+  const templates = copyTemplates[tipo] || copyTemplates.promo;
+  const container = document.getElementById('copySuggestions');
+  container.innerHTML = '';
+  templates.forEach((t, i) => {
+    const text = t.replace(/{produto}/g, produto).replace(/{beneficio}/g, beneficio).replace(/{publico}/g, publico).replace(/{oferta}/g, oferta);
+    const div = document.createElement('div');
+    div.className = 'copy-suggestion';
+    div.innerHTML = `<p class="text-xs text-sec mb-1">Opção ${i+1}</p><p class="text-sm whitespace-pre-line">${text}</p>`;
+    div.onclick = () => {
+      document.getElementById('pi-text').value = text;
+      updatePostIA();
+    };
+    container.appendChild(div);
+  });
+  if (!document.getElementById('pi-text').value) {
+    document.getElementById('pi-text').value = templates[0].replace(/{produto}/g, produto).replace(/{beneficio}/g, beneficio).replace(/{publico}/g, publico).replace(/{oferta}/g, oferta);
+    updatePostIA();
+  }
+}
+function setPostColor(color, el) {
+  state.postColor = color;
+  document.querySelectorAll('#post-ia .color-dot').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+  updatePostIA();
+}
+function updatePostIA() {
+  const text = document.getElementById('pi-text').value;
+  const produto = document.getElementById('pi-produto').value || 'Seu Produto';
+  const lines = text.split('\n').filter(l => l.trim());
+  const titulo = lines[0] || 'Título';
+  const sub = lines.slice(1, 3).join(' ') || 'Descrição';
 
-        function updateCardapio() {
-            const nome = document.getElementById('cardapioNome').value || 'Nome do Local';
-            const tipo = document.getElementById('cardapioTipo').value;
-            const contato = document.getElementById('cardapioContato').value || 'Contato aqui';
-            
-            document.getElementById('previewCardapioNome').textContent = nome;
-            document.getElementById('previewCardapioContato').textContent = contato;
-            
-            const tipos = { restaurante: 'Restaurante/Lanchonete', servicos: 'Serviços', produtos: 'Produtos' };
-            document.getElementById('previewCardapioTipo').textContent = tipos[tipo];
-            
-            const nomes = document.querySelectorAll('.item-nome');
-            const precos = document.querySelectorAll('.item-preco');
-            const previewItens = document.getElementById('previewItens');
-            previewItens.innerHTML = '';
-            
-            for (let i = 0; i < nomes.length; i++) {
-                if (nomes[i].value || precos[i].value) {
-                    const div = document.createElement('div');
-                    div.className = 'flex justify-between';
-                    div.innerHTML = `<span>${nomes[i].value || 'Item'}</span><span>${precos[i].value || 'R$ 0,00'}</span>`;
-                    previewItens.appendChild(div);
-                }
-            }
-            
-            if (previewItens.children.length === 0) {
-                previewItens.innerHTML = '<div class="flex justify-between"><span>Item exemplo</span><span>R$ 0,00</span></div>';
-            }
-        }
+  document.getElementById('pi-prev-titulo').textContent = produto;
+  document.getElementById('pi-prev-sub').textContent = sub;
+  document.getElementById('pi-prev-legenda').textContent = text;
+  document.getElementById('pi-preview').style.background = `linear-gradient(135deg, ${state.postColor}, ${adjustColor(state.postColor, -40)})`;
+}
+async function downloadPostIA() {
+  const preview = document.getElementById('pi-preview');
+  const canvas = await html2canvas(preview, { scale: 3, backgroundColor: null });
+  const link = document.createElement('a');
+  link.download = 'post-instagram.png';
+  link.href = canvas.toDataURL();
+  link.click();
+  saveHistory('post-ia', document.getElementById('pi-produto').value || 'Post');
+  toast('✅ Post baixado!');
+}
 
-        function downloadCardapio() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 1080;
-            canvas.height = 1920;
-            
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#8b5cf6');
-            gradient.addColorStop(1, '#6366f1');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            
-            const nome = document.getElementById('cardapioNome').value || 'Nome do Local';
-            ctx.font = 'bold 60px Arial';
-            ctx.fillText(nome, canvas.width / 2, 150);
-            
-            const tipo = document.getElementById('cardapioTipo').value;
-            const tipos = { restaurante: 'Restaurante/Lanchonete', servicos: 'Serviços', produtos: 'Produtos' };
-            ctx.font = '35px Arial';
-            ctx.fillText(tipos[tipo], canvas.width / 2, 220);
-            
-            const nomes = document.querySelectorAll('.item-nome');
-            const precos = document.querySelectorAll('.item-preco');
-            let y = 350;
-            
-            ctx.font = '45px Arial';
-            for (let i = 0; i < Math.min(nomes.length, 15); i++) {
-                if (nomes[i].value || precos[i].value) {
-                    ctx.textAlign = 'left';
-                    ctx.fillText(nomes[i].value || 'Item', 100, y);
-                    ctx.textAlign = 'right';
-                    ctx.fillText(precos[i].value || 'R$ 0,00', canvas.width - 100, y);
-                    y += 80;
-                }
-            }
-            
-            const contato = document.getElementById('cardapioContato').value || '';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#1f2937';
-            ctx.fillRect(canvas.width / 2 - 300, y + 50, 600, 100);
-            ctx.fillStyle = 'white';
-            ctx.font = '40px Arial';
-            ctx.fillText(contato, canvas.width / 2, y + 120);
-            
-            const link = document.createElement('a');
-            link.download = 'cardapio.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+// ============ BANNER SAZONAL ============
+function detectSeason() {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  let detected = 'generico';
+  if (month === 12) detected = 'natal';
+  else if (month === 11 && day >= 20) detected = 'blackfriday';
+  else if (month === 5) detected = 'maes';
+  else if (month === 6 && day <= 15) detected = 'namorados';
+  else if (month === 4) detected = 'pascoa';
+  else if (month === 6 || month === 7) detected = 'junina';
+  else if (month === 2) detected = 'carnaval';
+  setSeason(detected, true);
+}
+function setSeason(key, auto = false) {
+  state.season = key;
+  const s = seasons[key];
+  document.getElementById('bs-detect-title').textContent = `${s.emoji} ${s.title}`;
+  document.getElementById('bs-detect-desc').textContent = auto ? `Detectado: ${s.desc}` : s.desc;
+  document.getElementById('bs-titulo').placeholder = `PROMOÇÃO ${s.title.toUpperCase()}`;
+  if (!document.getElementById('bs-titulo').value) document.getElementById('bs-titulo').value = `PROMOÇÃO ${s.title.toUpperCase()}`;
+  if (!document.getElementById('bs-sub').value) document.getElementById('bs-sub').value = s.desc;
+  updateBannerSazonal();
+}
+function updateBannerSazonal() {
+  const s = seasons[state.season];
+  const titulo = document.getElementById('bs-titulo').value || 'PROMOÇÃO';
+  const sub = document.getElementById('bs-sub').value || s.desc;
+  const empresa = document.getElementById('bs-empresa').value || 'Sua Empresa';
 
-        // Logo
-        function selectLogoStyle(style) {
-            logoStyle = style;
-            document.querySelectorAll('.logo-style-btn').forEach(btn => {
-                btn.classList.remove('border-purple-500');
-                btn.classList.add('border-gray-200');
-                if (btn.dataset.style === style) {
-                    btn.classList.add('border-purple-500');
-                    btn.classList.remove('border-gray-200');
-                }
-            });
-            updateLogo();
-        }
+  document.getElementById('bs-prev-tag').textContent = s.title;
+  document.getElementById('bs-prev-titulo').textContent = titulo;
+  document.getElementById('bs-prev-sub').textContent = sub;
+  document.getElementById('bs-prev-empresa').textContent = empresa;
 
-        function selectLogoColor(color) {
-            logoColor = color;
-            updateLogo();
-        }
+  const preview = document.getElementById('bs-preview');
+  preview.className = `rounded-xl bg-gradient-to-br ${s.gradient} p-8 text-white flex flex-col justify-between overflow-hidden relative`;
+}
+async function downloadBannerSazonal() {
+  const preview = document.getElementById('bs-preview');
+  const canvas = await html2canvas(preview, { scale: 3, backgroundColor: null });
+  const link = document.createElement('a');
+  link.download = `banner-${state.season}.png`;
+  link.href = canvas.toDataURL();
+  link.click();
+  saveHistory('banner-sazonal', seasons[state.season].title);
+  toast('✅ Banner baixado!');
+}
 
-        function selectLogoIcon(icon) {
-            logoIcon = icon;
-            document.querySelectorAll('.logo-icon-btn').forEach(btn => {
-                btn.classList.remove('border-purple-500');
-                btn.classList.add('border-gray-200');
-                if (btn.dataset.icon === icon) {
-                    btn.classList.add('border-purple-500');
-                    btn.classList.remove('border-gray-200');
-                }
-            });
-            updateLogo();
-        }
+// ============ MENU PIX ============
+function initMenuPix() {
+  const itens = document.getElementById('mp-itens');
+  if (itens.children.length === 0) {
+    addItemMP(); addItemMP(); addItemMP();
+  }
+}
+function addItemMP() {
+  const div = document.createElement('div');
+  div.className = 'flex gap-2';
+  div.innerHTML = `
+    <input type="text" placeholder="Item" class="item-nome flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent text-sm" oninput="updateMenuPix()">
+    <input type="text" placeholder="R$ 0,00" class="item-preco w-24 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent text-sm" oninput="updateMenuPix()">
+    <button onclick="this.parentElement.remove(); updateMenuPix();" class="text-red-500 px-2">✕</button>
+  `;
+  document.getElementById('mp-itens').appendChild(div);
+}
+function updateMenuPix() {
+  const nome = document.getElementById('mp-nome').value || 'Seu Restaurante';
+  const pix = document.getElementById('mp-pix').value;
+  const titular = document.getElementById('mp-titular').value || 'Titular';
 
-        function updateLogo() {
-            const nome = document.getElementById('logoNome').value || 'Sua Empresa';
-            const slogan = document.getElementById('logoSlogan').value || 'Seu slogan aqui';
-            
-            document.getElementById('previewLogoNome').textContent = nome;
-            document.getElementById('previewLogoSlogan').textContent = slogan;
-            document.getElementById('previewLogoIcon').textContent = logoIcon;
-            
-            const nomeElement = document.getElementById('previewLogoNome');
-            if (logoStyle === 'moderno') {
-                nomeElement.style.fontWeight = '700';
-                nomeElement.style.textTransform = 'uppercase';
-            } else if (logoStyle === 'classico') {
-                nomeElement.style.fontFamily = 'serif';
-                nomeElement.style.fontWeight = '600';
-            } else {
-                nomeElement.style.fontWeight = '300';
-            }
-            nomeElement.style.color = logoColor;
-        }
+  document.getElementById('mp-prev-nome').textContent = nome;
+  document.getElementById('mp-prev-titular').textContent = titular;
 
-        function downloadLogo() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 800;
-            canvas.height = 800;
-            
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.textAlign = 'center';
-            
-            if (logoIcon) {
-                ctx.font = '120px Arial';
-                ctx.fillText(logoIcon, canvas.width / 2, 300);
-            }
-            
-            const nome = document.getElementById('logoNome').value || 'Sua Empresa';
-            ctx.fillStyle = logoColor;
-            if (logoStyle === 'classico') {
-                ctx.font = 'bold 60px serif';
-            } else if (logoStyle === 'moderno') {
-                ctx.font = 'bold 60px Arial';
-            } else {
-                ctx.font = '300 60px Arial';
-            }
-            ctx.fillText(nome, canvas.width / 2, 450);
-            
-            const slogan = document.getElementById('logoSlogan').value || '';
-            if (slogan) {
-                ctx.fillStyle = '#666';
-                ctx.font = '30px Arial';
-                ctx.fillText(slogan, canvas.width / 2, 520);
-            }
-            
-            const link = document.createElement('a');
-            link.download = 'logo.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+  const previewItens = document.getElementById('mp-prev-itens');
+  previewItens.innerHTML = '';
+  document.querySelectorAll('#mp-itens .flex').forEach(row => {
+    const n = row.querySelector('.item-nome').value;
+    const p = row.querySelector('.item-preco').value;
+    if (n || p) {
+      const div = document.createElement('div');
+      div.className = 'flex justify-between text-sm';
+      div.innerHTML = `<span>${n || 'Item'}</span><span class="font-semibold">${p || 'R$ 0,00'}</span>`;
+      previewItens.appendChild(div);
+    }
+  });
 
-        // Funções auxiliares
-        function adjustColor(color, amount) {
-            const num = parseInt(color.replace('#', ''), 16);
-            const r = Math.max(0, Math.min(255, (num >> 16) + amount));
-            const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
-            const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
-            return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
-        }
+  generateQR(pix || 'pix@exemplo.com', document.getElementById('mp-prev-qr'));
+}
+async function downloadMenuPix() {
+  const preview = document.getElementById('mp-preview');
+  const canvas = await html2canvas(preview, { scale: 3, backgroundColor: null });
+  const link = document.createElement('a');
+  link.download = 'cardapio-pix.png';
+  link.href = canvas.toDataURL();
+  link.click();
+  saveHistory('menu-pix', document.getElementById('mp-nome').value || 'Cardápio');
+  toast('✅ Cardápio baixado!');
+}
 
-        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-            const words = text.split(' ');
-            let line = '';
-            
-            for (let n = 0; n < words.length; n++) {
-                const testLine = line + words[n] + ' ';
-                const metrics = ctx.measureText(testLine);
-                const testWidth = metrics.width;
-                
-                if (testWidth > maxWidth && n > 0) {
-                    ctx.fillText(line, x, y);
-                    line = words[n] + ' ';
-                    y += lineHeight;
-                } else {
-                    line = testLine;
-                }
-            }
-            ctx.fillText(line, x, y);
-        }
+// ============ HISTÓRICO ============
+function saveHistory(type, name) {
+  state.history.unshift({ type, name, date: new Date().toISOString() });
+  if (state.history.length > 50) state.history = state.history.slice(0, 50);
+  localStorage.setItem('mk_history', JSON.stringify(state.history));
+}
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (!state.history.length) {
+    list.innerHTML = '<p class="text-center text-sec py-8">Nenhuma criação ainda</p>';
+    return;
+  }
+  list.innerHTML = state.history.map((h, i) => `
+    <div class="history-item card-bg rounded-lg p-4 flex items-center justify-between">
+      <div>
+        <p class="font-semibold">${h.name}</p>
+        <p class="text-xs text-sec">${h.type} · ${new Date(h.date).toLocaleDateString('pt-BR')}</p>
+      </div>
+      <button onclick="deleteHistory(${i})" class="text-red-500 text-sm">🗑️</button>
+    </div>
+  `).join('');
+}
+function deleteHistory(i) {
+  state.history.splice(i, 1);
+  localStorage.setItem('mk_history', JSON.stringify(state.history));
+  renderHistory();
+}
+function clearHistory() {
+  if (confirm('Limpar todo o histórico?')) {
+    state.history = [];
+    localStorage.removeItem('mk_history');
+    renderHistory();
+  }
+}
 
-        // Inicialização
-        updateCartao();
-        updateBanner();
-        updateAnuncio();
-        updateFlyer();
-        updateCardapio();
-        updateLogo();
-    </script>
+// ============ UTIL ============
+function adjustColor(hex, amt) {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, (num >> 16) + amt));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + amt));
+  const b = Math.max(0, Math.min(255, (num & 0xff) + amt));
+  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+}
+
+// ============ INIT ============
+// Detectar sazonalidade no menu principal
+function checkSeasonalBanner() {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  let season = null;
+  if (month === 12) season = seasons.natal;
+  else if (month === 11) season = seasons.blackfriday;
+  else if (month === 5) season = seasons.maes;
+  else if (month === 6) season = seasons.namorados;
+  if (season) {
+    document.getElementById('seasonalBanner').classList.remove('hidden');
+    document.getElementById('seasonalEmoji').textContent = season.emoji;
+    document.getElementById('seasonalTitle').textContent = `${season.title} está chegando!`;
+    document.getElementById('seasonalDesc').textContent = season.desc;
+  }
+}
+checkSeasonalBanner();
+
+// Carregar de link compartilhado
+if (location.hash.startsWith('#card=')) {
+  try {
+    const data = JSON.parse(atob(location.hash.slice(6)));
+    showTool('cartao-digital');
+    setTimeout(() => {
+      if (data.n) document.getElementById('cd-nome').value = data.n;
+      if (data.p) document.getElementById('cd-profissao').value = data.p;
+      if (data.w) document.getElementById('cd-whatsapp').value = data.w;
+      if (data.i) document.getElementById('cd-instagram').value = data.i;
+      if (data.x) document.getElementById('cd-pix').value = data.x;
+      updateCartaoDigital();
+    }, 100);
+  } catch (e) {}
+}
+</script>
 </body>
 </html>
