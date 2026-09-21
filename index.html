@@ -36,6 +36,11 @@
   .toast.on{transform:translate(-50%,0)}
   .phone{background:#111;border-radius:30px;padding:10px;position:relative}
   .phone::before{content:'';position:absolute;top:7px;left:50%;transform:translateX(-50%);width:70px;height:5px;background:#000;border-radius:3px}
+  .modebtn{padding:9px;border-radius:10px;border:1px solid #cbd5e1;font-size:13px;font-weight:700;cursor:pointer;background:var(--card);color:var(--tx)}
+  .modebtn.on{border-color:var(--ac);color:var(--ac)}
+  .icobtn{padding:8px;border-radius:10px;border:2px solid transparent;background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .icobtn.on{border-color:var(--ac)}
+  .icobtn:hover{transform:scale(1.08)}
 </style>
 </head>
 <body>
@@ -54,23 +59,22 @@
   </div>
 </header>
 
-<!-- MENU -->
 <section id="mainMenu" class="py-10">
   <div class="max-w-6xl mx-auto px-4 text-center">
     <h2 class="text-3xl md:text-5xl font-extrabold mb-3">Crie materiais profissionais<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500">sem saber design</span></h2>
-    <p class="text-sec mb-10">Toque, preencha, baixe. QR codes reais e textos prontos.</p>
+    <p class="text-sec mb-10">Fotos do seu celular, ícones profissionais e QR codes reais.</p>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-left">
-      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cartao-digital')"><div class="text-2xl mb-2">📱</div><h3 class="font-bold text-sm mb-1">Cartão Digital QR</h3><p class="text-sec text-xs">QR real de WhatsApp/Pix</p></div>
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cartao-digital')"><div class="text-2xl mb-2">📱</div><h3 class="font-bold text-sm mb-1">Cartão Digital QR</h3><p class="text-sec text-xs">Com sua foto e QR real</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('post-ia')"><div class="text-2xl mb-2">✍️</div><h3 class="font-bold text-sm mb-1">Post com Textos IA</h3><p class="text-sec text-xs">3 legendas prontas p/ usar</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('sazonal')"><div class="text-2xl mb-2">🎄</div><h3 class="font-bold text-sm mb-1">Banner Sazonal</h3><p class="text-sec text-xs">Detecta a data comemorativa</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('menu-pix')"><div class="text-2xl mb-2">💳</div><h3 class="font-bold text-sm mb-1">Cardápio + Pix</h3><p class="text-sec text-xs">Preços com QR de pagamento</p></div>
-      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cartao')"><div class="text-2xl mb-2">💳</div><h3 class="font-bold text-sm mb-1">Cartão p/ Impressão</h3><p class="text-sec text-xs">Frente com QR do WhatsApp</p></div>
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cartao')"><div class="text-2xl mb-2">💳</div><h3 class="font-bold text-sm mb-1">Cartão p/ Impressão</h3><p class="text-sec text-xs">Selo profissional + QR</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('banner')"><div class="text-2xl mb-2">📐</div><h3 class="font-bold text-sm mb-1">Banner Redes</h3><p class="text-sec text-xs">Insta, Story, Face, Status</p></div>
-      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('anuncio')"><div class="text-2xl mb-2">🏷️</div><h3 class="font-bold text-sm mb-1">Anúncio de Venda</h3><p class="text-sec text-xs">Produto, preço e contato</p></div>
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('anuncio')"><div class="text-2xl mb-2">🏷️</div><h3 class="font-bold text-sm mb-1">Anúncio de Venda</h3><p class="text-sec text-xs">Com foto do produto</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('story')"><div class="text-2xl mb-2">📊</div><h3 class="font-bold text-sm mb-1">Story com Enquete</h3><p class="text-sec text-xs">Pergunta com 2 opções</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('flyer')"><div class="text-2xl mb-2">📄</div><h3 class="font-bold text-sm mb-1">Flyer de Evento</h3><p class="text-sec text-xs">Data, local e detalhes</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('cardapio')"><div class="text-2xl mb-2">📋</div><h3 class="font-bold text-sm mb-1">Lista de Preços</h3><p class="text-sec text-xs">Itens ilimitados</p></div>
-      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('logo')"><div class="text-2xl mb-2">⭐</div><h3 class="font-bold text-sm mb-1">Logotipo</h3><p class="text-sec text-xs">3 estilos e 8 ícones</p></div>
+      <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('logo')"><div class="text-2xl mb-2">⭐</div><h3 class="font-bold text-sm mb-1">Logotipo</h3><p class="text-sec text-xs">Monograma, ícone ou foto</p></div>
       <div class="tool-card card-bg rounded-2xl p-5" onclick="showTool('assinatura')"><div class="text-2xl mb-2">✉️</div><h3 class="font-bold text-sm mb-1">Assinatura de Email</h3><p class="text-sec text-xs">Copia e cola pronto</p></div>
     </div>
   </div>
@@ -88,6 +92,10 @@
       <input class="inp" id="cd-zap" placeholder="WhatsApp com DDD" oninput="updCD()">
       <input class="inp" id="cd-insta" placeholder="@instagram (opcional)" oninput="updCD()">
       <input class="inp" id="cd-pix" placeholder="Chave Pix (opcional)" oninput="updCD()">
+      <div>
+        <label class="text-xs font-bold text-sec">Sua foto (câmera ou galeria) — opcional</label>
+        <input type="file" accept="image/*" capture="environment" class="inp mt-1" onchange="loadFoto(this,'cdFoto',updCD)">
+      </div>
       <div class="grid grid-cols-3 gap-2">
         <button id="cdq-whatsapp" onclick="setQR('whatsapp')" class="inp font-bold" style="border-color:var(--ac)">WhatsApp</button>
         <button id="cdq-pix" onclick="setQR('pix')" class="inp">Pix</button>
@@ -100,7 +108,10 @@
     </div>
     <div class="card-bg rounded-2xl p-6 flex justify-center">
       <div class="phone w-64"><div id="cd-prev" class="rounded-2xl aspect-[9/16] p-5 text-white flex flex-col justify-between" style="background:linear-gradient(135deg,#6366f1,#a855f7)">
-        <div><h3 class="text-xl font-extrabold" id="cd-p-nome">Sua Empresa</h3><p class="text-xs opacity-80" id="cd-p-prof">Profissão</p></div>
+        <div class="text-center">
+          <img id="cd-p-foto" class="w-20 h-20 rounded-full object-cover mx-auto mb-2 border-2 border-white/70" style="display:none" alt="">
+          <h3 class="text-xl font-extrabold" id="cd-p-nome">Sua Empresa</h3><p class="text-xs opacity-80" id="cd-p-prof">Profissão</p>
+        </div>
         <div class="bg-white/20 rounded-xl p-3"><div id="cd-p-qr" class="bg-white rounded-lg p-2 aspect-square flex items-center justify-center text-gray-400 text-[10px]">QR</div><p class="text-[10px] text-center mt-1 opacity-90">Aponte a câmera</p></div>
         <div class="text-xs space-y-1"><p id="cd-p-zap">📱 WhatsApp</p><p id="cd-p-insta">📷 @instagram</p></div>
       </div></div>
@@ -198,6 +209,10 @@
       <input class="inp" id="ct-nome" placeholder="Seu nome" oninput="updCT()">
       <input class="inp" id="ct-zap" placeholder="WhatsApp com DDD" oninput="updCT()">
       <input class="inp" id="ct-end" placeholder="Endereço (opcional)" oninput="updCT()">
+      <div class="grid grid-cols-2 gap-2">
+        <select id="ct-ico" class="inp" onchange="S.ctIco=this.value;updCT()"></select>
+        <select id="ct-forma" class="inp" onchange="S.ctForma=this.value;updCT()"><option value="circulo">Selo circular</option><option value="quadrado">Selo quadrado</option><option value="nenhum">Sem selo</option></select>
+      </div>
       <div class="flex gap-2">
         <button onclick="setCT('#667eea',this)" class="cdot on" style="background:#667eea"></button>
         <button onclick="setCT('#0ea5e9',this)" class="cdot" style="background:#0ea5e9"></button>
@@ -208,7 +223,10 @@
       <button onclick="dlCT()" class="w-full py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700">📥 Baixar Cartão (QR real)</button>
     </div>
     <div class="card-bg rounded-2xl p-6 flex items-center"><div id="ct-prev" class="w-full aspect-[7/4] rounded-xl p-6 text-white flex flex-col justify-between" style="background:linear-gradient(135deg,#667eea,#3f47b0)">
-      <div><h3 class="text-xl font-extrabold" id="ct-p-emp">Sua Empresa</h3><p class="text-xs opacity-90" id="ct-p-serv">Seu serviço</p></div>
+      <div class="flex justify-between items-start">
+        <div><h3 class="text-xl font-extrabold" id="ct-p-emp">Sua Empresa</h3><p class="text-xs opacity-90" id="ct-p-serv">Seu serviço</p></div>
+        <div id="ct-p-selo" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0"></div>
+      </div>
       <div class="flex justify-between items-end gap-3">
         <div class="text-xs"><p class="font-bold text-sm" id="ct-p-nome">Seu Nome</p><p id="ct-p-zap">(00) 00000-0000</p><p id="ct-p-end"></p></div>
         <div id="ct-p-qr" class="bg-white rounded p-1 w-16 h-16 flex-shrink-0 flex items-center justify-center text-gray-400 text-[8px]">QR</div>
@@ -229,11 +247,11 @@
         <button id="bnz-facebook" onclick="setBNZ('facebook')" class="inp">Face</button>
         <button id="bnz-zap" onclick="setBNZ('zap')" class="inp">Status</button>
       </div>
-      <div class="grid grid-cols-4 gap-2 text-xs">
-        <button id="bnt-promo" onclick="setBNT('promo')" class="inp font-bold" style="border-color:var(--ac)">🏷️</button>
-        <button id="bnt-novo" onclick="setBNT('novo')" class="inp">✨</button>
-        <button id="bnt-aberto" onclick="setBNT('aberto')" class="inp">🎉</button>
-        <button id="bnt-gratidao" onclick="setBNT('gratidao')" class="inp">🙏</button>
+      <div class="grid grid-cols-4 gap-2">
+        <button id="bnt-promo" onclick="setBNT('promo')" class="inp flex justify-center" style="border-color:var(--ac)"><span id="bti-promo"></span></button>
+        <button id="bnt-novo" onclick="setBNT('novo')" class="inp flex justify-center"><span id="bti-novo"></span></button>
+        <button id="bnt-aberto" onclick="setBNT('aberto')" class="inp flex justify-center"><span id="bti-aberto"></span></button>
+        <button id="bnt-gratidao" onclick="setBNT('gratidao')" class="inp flex justify-center"><span id="bti-gratidao"></span></button>
       </div>
       <input class="inp" id="bn-tit" placeholder="Título" oninput="updBN()">
       <input class="inp" id="bn-txt" placeholder="Complemento" oninput="updBN()">
@@ -241,7 +259,7 @@
       <button onclick="dlBN()" class="w-full py-3 rounded-xl font-bold text-white bg-pink-600 hover:bg-pink-700">📥 Baixar Banner</button>
     </div>
     <div class="card-bg rounded-2xl p-6 flex items-center justify-center"><div id="bn-prev" class="w-full rounded-2xl p-8 text-white text-center flex flex-col justify-center" style="aspect-ratio:1/1;background:linear-gradient(135deg,#8b5cf6,#3b82f6)">
-      <div class="text-5xl mb-3" id="bn-p-icon">🏷️</div>
+      <div class="mb-3 flex justify-center" id="bn-p-icon"></div>
       <h3 class="text-2xl font-extrabold mb-2" id="bn-p-tit">PROMOÇÃO</h3>
       <p class="mb-3" id="bn-p-txt">Complemento</p>
       <p class="text-sm font-bold" id="bn-p-emp">Empresa</p>
@@ -259,10 +277,15 @@
       <input class="inp" id="an-preco" placeholder="Preço (R$ 45,00)" oninput="updAN()">
       <input class="inp" id="an-desc" placeholder="Descrição curta" oninput="updAN()">
       <input class="inp" id="an-cont" placeholder="WhatsApp / contato" oninput="updAN()">
+      <div>
+        <label class="text-xs font-bold text-sec">Foto do produto (câmera ou galeria) — opcional</label>
+        <input type="file" accept="image/*" capture="environment" class="inp mt-1" onchange="loadFoto(this,'anFoto',updAN)">
+      </div>
       <button onclick="dlAN()" class="w-full py-3 rounded-xl font-bold text-white bg-amber-600 hover:bg-amber-700">📥 Baixar Anúncio</button>
     </div>
     <div class="card-bg rounded-2xl p-6"><div class="aspect-square rounded-2xl p-8 text-white text-center flex flex-col justify-center" style="background:linear-gradient(135deg,#fbbf24,#ea580c)">
-      <div class="text-5xl mb-3">💰</div>
+      <img id="an-p-foto" class="w-32 h-32 object-cover rounded-2xl mx-auto mb-3 border-4 border-white/70" style="display:none" alt="">
+      <div id="an-p-ico" class="text-5xl mb-3">💰</div>
       <h3 class="text-2xl font-extrabold mb-2" id="an-p-prod">Produto</h3>
       <p class="text-4xl font-extrabold mb-3" id="an-p-preco">R$ 0,00</p>
       <p class="mb-4 text-sm" id="an-p-desc">Descrição</p>
@@ -341,11 +364,24 @@
 <!-- 11 LOGO -->
 <section id="logo" class="tool-section py-8"><div class="max-w-6xl mx-auto px-4">
   <button class="back-btn" onclick="showMenu()">← Voltar ao Menu</button>
-  <h2 class="text-2xl font-extrabold mb-6">⭐ Logotipo</h2>
+  <h2 class="text-2xl font-extrabold mb-6">⭐ Logotipo Profissional</h2>
   <div class="grid lg:grid-cols-2 gap-6">
     <div class="card-bg rounded-2xl p-6 space-y-3">
       <input class="inp" id="lg-nome" placeholder="Nome da empresa" oninput="updLG()">
       <input class="inp" id="lg-slogan" placeholder="Slogan (opcional)" oninput="updLG()">
+      <div class="grid grid-cols-3 gap-2">
+        <button id="lgm-mono" onclick="setLM('mono')" class="modebtn on">Monograma</button>
+        <button id="lgm-ico" onclick="setLM('ico')" class="modebtn">Ícone</button>
+        <button id="lgm-foto" onclick="setLM('foto')" class="modebtn">Foto</button>
+      </div>
+      <div id="lg-opt-mono" class="grid grid-cols-2 gap-2">
+        <select id="lg-shape" class="inp" onchange="S.lgShape=this.value;updLG()"><option value="circulo">Selo circular</option><option value="quadrado">Selo quadrado</option><option value="losango">Selo losango</option></select>
+      </div>
+      <div id="lg-opt-ico" style="display:none"><div id="lg-icons" class="grid grid-cols-6 gap-1"></div></div>
+      <div id="lg-opt-foto" style="display:none">
+        <label class="text-xs font-bold text-sec">Foto da logo ou produto (câmera/galeria)</label>
+        <input type="file" accept="image/*" capture="environment" class="inp mt-1" onchange="loadFoto(this,'lgFoto',updLG)">
+      </div>
       <div class="grid grid-cols-3 gap-2 text-sm">
         <button id="lgs-moderno" onclick="setLG('moderno')" class="inp font-bold" style="border-color:var(--ac)">Moderno</button>
         <button id="lgs-classico" onclick="setLG('classico')" class="inp">Clássico</button>
@@ -358,16 +394,12 @@
         <button onclick="setLC('#b45309',this)" class="cdot" style="background:#b45309"></button>
         <button onclick="setLC('#111827',this)" class="cdot" style="background:#111827"></button>
       </div>
-      <div class="grid grid-cols-8 gap-1 text-base">
-        <button onclick="setLI('⭐',this)" class="inp">⭐</button><button onclick="setLI('🚀',this)" class="inp">🚀</button>
-        <button onclick="setLI('💎',this)" class="inp">💎</button><button onclick="setLI('👑',this)" class="inp">👑</button>
-        <button onclick="setLI('❤️',this)" class="inp">❤️</button><button onclick="setLI('🍃',this)" class="inp">🍃</button>
-        <button onclick="setLI('⚡',this)" class="inp">⚡</button><button onclick="setLI('',this)" class="inp">❌</button>
-      </div>
       <button onclick="dlLG()" class="w-full py-3 rounded-xl font-bold text-white bg-gray-700 hover:bg-gray-800">📥 Baixar Logo</button>
     </div>
     <div class="card-bg rounded-2xl p-6 flex items-center justify-center"><div class="text-center p-6">
-      <div class="text-6xl mb-3" id="lg-p-icon">⭐</div>
+      <div id="lg-p-mono" class="w-24 h-24 mx-auto mb-3 rounded-full flex items-center justify-center text-white font-extrabold text-3xl" style="background:#6366f1">SE</div>
+      <div id="lg-p-ico" class="mx-auto mb-3 flex justify-center" style="display:none"></div>
+      <img id="lg-p-foto" class="w-24 h-24 object-cover rounded-2xl mx-auto mb-3" style="display:none" alt="">
       <h3 class="text-3xl font-extrabold mb-1" id="lg-p-nome" style="color:#6366f1">Sua Empresa</h3>
       <p class="text-sec text-sm" id="lg-p-slogan">Slogan</p>
     </div></div>
@@ -397,7 +429,6 @@
   </div>
 </div></section>
 
-<!-- HISTÓRICO -->
 <section id="history" class="tool-section py-8"><div class="max-w-3xl mx-auto px-4">
   <button class="back-btn" onclick="showMenu()">← Voltar ao Menu</button>
   <h2 class="text-2xl font-extrabold mb-6">🕐 Suas Criações</h2>
@@ -405,17 +436,16 @@
   <button onclick="limparHist()" class="mt-4 text-red-500 text-sm font-bold">Limpar tudo</button>
 </div></section>
 
-<!-- AJUDA -->
 <section id="help" class="tool-section py-8"><div class="max-w-3xl mx-auto px-4">
   <button class="back-btn" onclick="showMenu()">← Voltar ao Menu</button>
   <h2 class="text-2xl font-extrabold mb-6">📖 Como Usar</h2>
   <div class="card-bg rounded-2xl p-6 space-y-3 text-sm md:text-base">
     <p><strong>1.</strong> Toque em uma ferramenta do menu.</p>
     <p><strong>2.</strong> Preencha os campos — o modelo ao lado muda na hora.</p>
-    <p><strong>3.</strong> Toque em Baixar: a imagem vai para seus Downloads.</p>
-    <p><strong>4.</strong> QR codes são de verdade: teste escaneando com outra câmera.</p>
-    <p><strong>🔒 Privacidade:</strong> tudo acontece no seu navegador. Nada é enviado para servidores.</p>
-    <p><strong>💡 Dica:</strong> use o botão ← Voltar ao Menu no topo de cada tela.</p>
+    <p><strong>3.</strong> Use sua <strong>foto do celular</strong> no cartão, anúncio e logo: é o que mais passa confiança.</p>
+    <p><strong>4.</strong> Baixe: a imagem vai para seus Downloads.</p>
+    <p><strong>5.</strong> QR codes são reais: teste escaneando com outra câmera.</p>
+    <p><strong>🔒 Privacidade:</strong> suas fotos nunca saem do aparelho. Tudo é processado no navegador.</p>
   </div>
 </div></section>
 
@@ -423,7 +453,7 @@
 <footer class="py-8 text-center text-sec text-sm">MarketingKit Pro · grátis para sempre<br><span class="text-xs">Feito com ❤️ para quem empreende</span></footer>
 
 <script>
-var S={qr:'whatsapp',pc:'#6366f1',sz:'promo',ct:'#667eea',bnz:'instagram',bnt:'promo',lgs:'moderno',lgc:'#6366f1',lgi:'⭐',niche:'geral',pal:['#6366f1','#a855f7'],hist:[]};
+var S={qr:'whatsapp',pc:'#6366f1',sz:'promo',ct:'#667eea',ctIco:'tesoura',ctForma:'circulo',bnz:'instagram',bnt:'promo',lgs:'moderno',lgc:'#6366f1',lgMode:'mono',lgShape:'circulo',lgIcon:'estrela',lgFoto:null,cdFoto:null,anFoto:null,niche:'geral',pal:['#6366f1','#a855f7'],hist:[]};
 try{S.hist=JSON.parse(localStorage.getItem('mk_hist')||'[]')}catch(e){}
 function $(i){return document.getElementById(i)}
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},2600)}
@@ -445,6 +475,53 @@ function putQR(el,t){if(!t){el.innerHTML='<span style="font-size:9px">QR</span>'
 function drawQR(ctx,t,x,y,sz){return new Promise(function(res){var u=qrGIF(t);if(!u){res();return}var im=new Image();im.onload=function(){ctx.drawImage(im,x,y,sz,sz);res()};im.onerror=function(){res()};im.src=u})}
 function waLink(z){var d=String(z).replace(/\D/g,'');return d.length>=10?'https://wa.me/55'+d:(d?'https://wa.me/'+d:'')}
 function save(canvas,name){var a=document.createElement('a');a.download=name;a.href=canvas.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()}
+function loadFoto(inp,key,cb){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){S[key]=r.result;cb()};r.readAsDataURL(f)}
+function imgFrom(src){return new Promise(function(res){var i=new Image();i.onload=function(){res(i)};i.onerror=function(){res(null)};i.src=src})}
+function drawCover(ctx,img,x,y,w,h){var ir=img.width/img.height,rr=w/h,sx=0,sy=0,sw=img.width,sh=img.height;if(ir>rr){sw=img.height*rr;sx=(img.width-sw)/2}else{sh=img.width/rr;sy=(img.height-sh)/2}ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h)}
+function drawCircleFoto(ctx,img,cx,cy,r){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.closePath();ctx.clip();drawCover(ctx,img,cx-r,cy-r,r*2,r*2);ctx.restore();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=6;ctx.stroke()}
+function iniciais(nome){var p=String(nome||'').trim().split(/\s+/);var a=(p[0]||'S').charAt(0),b=p.length>1?(p[p.length-1].charAt(0)):'';return (a+b).toUpperCase()}
+
+/* ÍCONES PROFISSIONAIS (traço, estilo estúdio) */
+var ICONS={
+estrela:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>',
+coracao:'<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+raio:'<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>',
+casa:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+telefone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+tesoura:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/>',
+cafe:'<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/>',
+talheres:'<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
+chave:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+pincel:'<path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/>',
+sacola:'<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+etiqueta:'<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5"/>',
+relogio:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+pin:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+email:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>',
+globo:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+musica:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+folha:'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+escudo:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+pasta:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+formatura:'<path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>',
+gema:'<path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3L8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>',
+coroa:'<path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.3l4.27-3.67a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.67a1 1 0 0 0 1.52-.3z"/>',
+sol:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>',
+lua:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+caminhao:'<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>',
+laptop:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/>',
+celular:'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/>',
+flor:'<circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2.5"/><circle cx="19" cy="9" r="2.5"/><circle cx="17" cy="17" r="2.5"/><circle cx="7" cy="17" r="2.5"/><circle cx="5" cy="9" r="2.5"/>',
+pata:'<circle cx="4.5" cy="9.5" r="2"/><circle cx="9" cy="5.5" r="2"/><circle cx="15" cy="5.5" r="2"/><circle cx="19.5" cy="9.5" r="2"/><path d="M12 10c-2.5 0-4.6 2-5.6 4-.8 1.6-.2 3.5 1.3 4.3.9.5 2 .5 2.9.1.9-.4 1.9-.4 2.8 0 .9.4 2 .4 2.9-.1 1.5-.8 2.1-2.7 1.3-4.3-1-2-3.1-4-5.6-4z"/>'};
+var ICON_NAMES={estrela:'Estrela',coracao:'Coração',raio:'Energia',casa:'Imobiliária',telefone:'Contato',camera:'Foto/Vídeo',tesoura:'Beleza/Barbearia',cafe:'Café/Lanchonete',talheres:'Restaurante',chave:'Mecânica',pincel:'Pintura/Design',sacola:'Loja',etiqueta:'Promoção',relogio:'Relojoaria',pin:'Localização',email:'Email',globo:'Global',musica:'Música',folha:'Natural/Saúde',escudo:'Segurança',pasta:'Escritório',formatura:'Educação',gema:'Joalheria',coroa:'Premium',sol:'Solar',lua:'Noturno',caminhao:'Transporte',laptop:'Tecnologia',celular:'Assistência',flor:'Floricultura',pata:'Pet'};
+function iconSVG(n,c,s){return '<svg xmlns="http://www.w3.org/2000/svg" width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[n]||'')+'</svg>'}
+function iconImg(n,c,s){return new Promise(function(res){var i=new Image();i.onload=function(){res(i)};i.onerror=function(){res(null)};i.src='data:image/svg+xml;utf8,'+encodeURIComponent(iconSVG(n,c,s))})}
+function drawSelo(ctx,forma,cor,cx,cy,tam,txt){ctx.fillStyle=cor;
+if(forma==='circulo'){ctx.beginPath();ctx.arc(cx,cy,tam/2,0,Math.PI*2);ctx.fill()}
+else if(forma==='quadrado'){ctx.fillRect(cx-tam/2,cy-tam/2,tam,tam)}
+else{ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.PI/4);ctx.fillRect(-tam/2.6,-tam/2.6,tam/1.3,tam/1.3);ctx.restore()}
+if(txt){ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='800 '+(tam*0.42)+'px Inter,Arial';ctx.fillText(txt,cx,cy+tam*0.02);ctx.textBaseline='alphabetic'}}
 
 /* 1 CARTÃO DIGITAL */
 var niches={geral:['#6366f1','#a855f7'],restaurante:['#dc2626','#f59e0b'],beleza:['#db2777','#f472b6'],tech:['#0284c7','#6366f1'],fitness:['#059669','#06b6d4'],moda:['#9d174d','#ec4899']};
@@ -453,12 +530,15 @@ function setQR(t){S.qr=t;['whatsapp','pix','maps'].forEach(function(k){$('cdq-'+
 function cdLink(){var z=$('cd-zap').value,p=$('cd-pix').value,n=$('cd-nome').value;
 if(S.qr==='whatsapp')return waLink(z);if(S.qr==='pix')return p||'';return 'https://maps.google.com/?q='+encodeURIComponent(n||'minha loja')}
 function updCD(){$('cd-p-nome').textContent=$('cd-nome').value||'Sua Empresa';$('cd-p-prof').textContent=$('cd-prof').value||'Profissão';$('cd-p-zap').textContent='📱 '+($('cd-zap').value||'WhatsApp');$('cd-p-insta').textContent='📷 '+($('cd-insta').value||'@instagram');
+var f=$('cd-p-foto');if(S.cdFoto){f.src=S.cdFoto;f.style.display='block'}else f.style.display='none';
 putQR($('cd-p-qr'),cdLink());$('cd-prev').style.background='linear-gradient(135deg,'+S.pal[0]+','+S.pal[1]+')'}
 function dlCD(f){var c=document.createElement('canvas');c.width=1080;c.height=1920;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1080,1920);g.addColorStop(0,S.pal[0]);g.addColorStop(1,S.pal[1]);x.fillStyle=g;x.fillRect(0,0,1080,1920);
-x.fillStyle='#fff';x.textAlign='center';x.font='800 76px Inter,Arial';x.fillText($('cd-nome').value||'Sua Empresa',540,300);x.font='400 40px Inter,Arial';x.fillText($('cd-prof').value||'',540,370);
-x.fillStyle='rgba(255,255,255,.2)';x.fillRect(240,520,600,760);x.fillStyle='#fff';x.fillRect(300,580,480,480);
-return drawQR(x,cdLink(),320,600,440).then(function(){x.fillStyle='#fff';x.font='400 38px Inter,Arial';x.fillText('Aponte a câmera para conversar',540,1160);x.font='600 42px Inter,Arial';x.fillText('📱 '+($('cd-zap').value||''),540,1420);x.fillText('📷 '+($('cd-insta').value||''),540,1490);
-if(f==='pdf'){var J=window.jspdf.jsPDF,p=new J('p','mm','a4');p.addImage(c.toDataURL('image/png'),'PNG',30,15,150,267);p.save('cartao-digital.pdf')}else save(c,'cartao-digital.png');saveHist('Cartão Digital',$('cd-nome').value||'Cartão');toast('✅ Baixado!')})}
+var top=300;return (S.cdFoto?imgFrom(S.cdFoto):Promise.resolve(null)).then(function(foto){
+if(foto){drawCircleFoto(x,foto,540,300,170);top=560}
+x.fillStyle='#fff';x.textAlign='center';x.font='800 76px Inter,Arial';x.fillText($('cd-nome').value||'Sua Empresa',540,top+40);x.font='400 40px Inter,Arial';x.fillText($('cd-prof').value||'',540,top+110);
+x.fillStyle='rgba(255,255,255,.2)';x.fillRect(240,top+180,600,760);x.fillStyle='#fff';x.fillRect(300,top+240,480,480);
+return drawQR(x,cdLink(),320,top+260,440).then(function(){x.fillStyle='#fff';x.font='400 38px Inter,Arial';x.fillText('Aponte a câmera para conversar',540,top+820);x.font='600 42px Inter,Arial';x.fillText('📱 '+($('cd-zap').value||''),540,1620);x.fillText('📷 '+($('cd-insta').value||''),540,1690);
+if(f==='pdf'){var J=window.jspdf.jsPDF,p=new J('p','mm','a4');p.addImage(c.toDataURL('image/png'),'PNG',30,15,150,267);p.save('cartao-digital.pdf')}else save(c,'cartao-digital.png');saveHist('Cartão Digital',$('cd-nome').value||'Cartão');toast('✅ Baixado!')})})}
 
 /* 2 POST IA */
 var TPL={promo:["🔥 {prod} com {ofe}!\n\n{ben} — feito para {pub}.\n\nChama no WhatsApp e garanta o seu! 💨","✨ Atenção, {pub}!\n\n{prod} agora com {ofe}.\n\n{ben} de verdade, sem enrolação.","🎉 É PROMOÇÃO!\n\n{prod} · {ben}\n\n👉 {ofe}\n\nCorre que acaba logo!"],lancamento:["🚀 ACABOU DE CHEGAR!\n\n{prod}\n\n{ben} — pensado para {pub}.","✨ A novidade que você esperava:\n\n{prod} já está disponível.\n\n{ben} em um só lugar. {ofe}","🎯 CHEGOU: {prod}\n\nPara {pub} que valoriza {ben}.\n\n{ofe}"],depoimento:["⭐⭐⭐⭐⭐\n\n\"{ben} — mudou minha rotina!\"\n\n{prod} aprovado por {pub}.","💬 Quem usa {prod}, recomenda:\n\n\"{ben}\"\n\nE você, quer sentir isso também?","✨ História real:\n\n{pub} + {prod} = {ben}.\n\n{ofe}"],dica:["💡 DICA DE OURO\n\n{ben} é mais fácil do que parece.\n\nCom {prod}, {pub} resolve em minutos.","📚 {pub}, salva essa dica:\n\n{ben}!\n\n{prod} te ajuda nisso. {ofe}","🎓 VOCÊ SABIA?\n\n{ben}.\n\n{prod} foi feito exatamente para {pub}."],urgencia:["⏰ ÚLTIMAS HORAS!\n\n{prod} com {ofe} só até hoje.\n\n{ben} — não deixe para depois.","🚨 ATENÇÃO, {pub}!\n\nAcaba HOJE: {prod}.\n\n{ben} por {ofe}.","⚡ CORRE!\n\nRestam poucas unidades de {prod}.\n\n{ben} · {ofe}"]};
@@ -469,102 +549,4 @@ if(!$('pi-txt').value){$('pi-txt').value=TPL[t][0].split('{prod}').join(p).split
 function setPC(c,el){S.pc=c;var d=document.querySelectorAll('#post-ia .cdot');for(var i=0;i<d.length;i++)d[i].classList.remove('on');el.classList.add('on');updPI()}
 function updPI(){$('pi-p-tit').textContent=$('pi-prod').value||'Seu Produto';var l=$('pi-txt').value.split('\n').filter(function(x){return x.trim()});$('pi-p-sub').textContent=l.slice(1,3).join(' ')||'Sua legenda aparece aqui';$('pi-prev').style.background='linear-gradient(135deg,'+S.pc+','+adj(S.pc,-60)+')'}
 function dlPI(){var c=document.createElement('canvas');c.width=1080;c.height=1080;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1080,1080);g.addColorStop(0,S.pc);g.addColorStop(1,adj(S.pc,-60));x.fillStyle=g;x.fillRect(0,0,1080,1080);
-x.fillStyle='#fff';x.textAlign='left';x.font='600 28px Inter,Arial';x.fillText('NOVIDADE',80,140);x.font='800 84px Inter,Arial';wrap(x,$('pi-prod').value||'Seu Produto',80,260,920,96);
-x.font='400 40px Inter,Arial';var l=$('pi-txt').value.split('\n').filter(function(v){return v.trim()});wrap(x,l.slice(1,4).join(' '),80,700,920,56);
-x.fillStyle='rgba(255,255,255,.25)';x.fillRect(80,900,340,80);x.fillStyle='#fff';x.font='700 36px Inter,Arial';x.fillText('Saiba mais →',110,952);
-save(c,'post.png');saveHist('Post',$('pi-prod').value||'Post');toast('✅ Post baixado!')}
-
-/* 3 SAZONAL */
-var SZ={natal:{n:'Natal',e:'🎄',a:'#b91c1c',b:'#15803d'},bf:{n:'Black Friday',e:'🏷️',a:'#0a0a0a',b:'#b45309'},maes:{n:'Dia das Mães',e:'🌸',a:'#db2777',b:'#f9a8d4'},namo:{n:'Dia dos Namorados',e:'💕',a:'#dc2626',b:'#f472b6'},pascoa:{n:'Páscoa',e:'🐰',a:'#d97706',b:'#78350f'},junina:{n:'Festa Junina',e:'🔥',a:'#ea580c',b:'#dc2626'},carna:{n:'Carnaval',e:'🎭',a:'#7c3aed',b:'#f59e0b'},promo:{n:'Promoção',e:'🎯',a:'#6366f1',b:'#ec4899'}};
-function detectSz(){var m=new Date().getMonth()+1,k='promo';if(m===12)k='natal';else if(m===11)k='bf';else if(m===5)k='maes';else if(m===6)k='namo';else if(m===4)k='pascoa';else if(m===2)k='carna';setSz(k)}
-function setSz(k){S.sz=k;var s=SZ[k];$('sz-detect').textContent=s.e+' Tema detectado: '+s.n;$('sz-detect').style.background='linear-gradient(90deg,'+s.a+','+s.b+')';
-if(!$('sz-tit').value)$('sz-tit').value='PROMOÇÃO '+s.n.toUpperCase();if(!$('sz-sub').value)$('sz-sub').value='Aproveite esta semana!';updSZ()}
-function updSZ(){var s=SZ[S.sz];$('sz-p-emoji').textContent=s.e;$('sz-p-tag').textContent=s.n;$('sz-p-tit').textContent=$('sz-tit').value||'PROMOÇÃO';$('sz-p-sub').textContent=$('sz-sub').value||'';$('sz-p-emp').textContent=$('sz-emp').value||'Sua Empresa';$('sz-prev').style.background='linear-gradient(135deg,'+s.a+','+s.b+')'}
-function dlSZ(){var s=SZ[S.sz],c=document.createElement('canvas');c.width=1080;c.height=1080;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1080,1080);g.addColorStop(0,s.a);g.addColorStop(1,s.b);x.fillStyle=g;x.fillRect(0,0,1080,1080);
-x.globalAlpha=.18;x.font='300px Arial';x.textAlign='center';x.fillText(s.e,880,260);x.globalAlpha=1;x.fillStyle='#fff';x.font='600 30px Inter,Arial';x.fillText(s.n.toUpperCase(),540,220);
-x.font='800 92px Inter,Arial';wrap(x,$('sz-tit').value||'PROMOÇÃO',540,420,920,104);x.font='400 46px Inter,Arial';wrap(x,$('sz-sub').value||'',540,700,900,60);
-x.font='700 40px Inter,Arial';x.fillText($('sz-emp').value||'Sua Empresa',540,960);save(c,'banner-'+S.sz+'.png');saveHist('Banner Sazonal',s.n);toast('✅ Banner baixado!')}
-
-/* 4 MENU PIX */
-function addMP(){var d=document.createElement('div');d.className='flex gap-2';d.innerHTML='<input class="inp mp-n" placeholder="Item" oninput="updMP()"><input class="inp mp-p" style="width:96px" placeholder="R$" oninput="updMP()"><button onclick="this.parentNode.remove();updMP()" class="text-red-500 font-bold">✕</button>';$('mp-list').appendChild(d)}
-function mpRows(){var out=[];var r=$('mp-list').children;for(var i=0;i<r.length;i++){var n=r[i].querySelector('.mp-n').value,p=r[i].querySelector('.mp-p').value;if(n||p)out.push([n||'Item',p||'R$ 0'])}return out}
-function updMP(){$('mp-p-nome').textContent=$('mp-nome').value||'Seu Negócio';$('mp-p-tit').textContent=$('mp-tit').value||'Titular';var rows=mpRows();$('mp-p-itens').innerHTML=rows.map(function(r){return '<div class="flex justify-between"><span>'+r[0]+'</span><span class="font-bold">'+r[1]+'</span></div>'}).join('');putQR($('mp-p-qr'),$('mp-pix').value||'')}
-function dlMP(){var rows=mpRows(),H=560+rows.length*76+560,c=document.createElement('canvas');c.width=1080;c.height=H;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#059669');g.addColorStop(1,'#064e3b');x.fillStyle=g;x.fillRect(0,0,1080,H);
-x.fillStyle='#fff';x.textAlign='center';x.font='800 64px Inter,Arial';x.fillText($('mp-nome').value||'Seu Negócio',540,120);x.font='400 30px Inter,Arial';x.fillText('CARDÁPIO DIGITAL',540,170);
-x.textAlign='left';x.font='400 40px Inter,Arial';var y=280;rows.forEach(function(r){x.textAlign='left';x.fillText(r[0],80,y);x.textAlign='right';x.font='700 40px Inter,Arial';x.fillText(r[1],1000,y);x.font='400 40px Inter,Arial';y+=76});
-var qy=y+40;x.fillStyle='#fff';x.fillRect(340,qy,400,400);return drawQR(x,$('mp-pix').value||'pix',360,qy+20,360).then(function(){x.fillStyle='#fff';x.textAlign='center';x.font='600 34px Inter,Arial';x.fillText('PAGUE COM PIX',540,qy+460);x.font='400 30px Inter,Arial';x.fillText($('mp-tit').value||'',540,qy+505);save(c,'cardapio-pix.png');saveHist('Cardápio Pix',$('mp-nome').value||'Cardápio');toast('✅ Cardápio baixado!')})}
-
-/* 5 CARTÃO */
-function setCT(c,el){S.ct=c;var d=document.querySelectorAll('#cartao .cdot');for(var i=0;i<d.length;i++)d[i].classList.remove('on');el.classList.add('on');updCT()}
-function updCT(){$('ct-p-emp').textContent=$('ct-emp').value||'Sua Empresa';$('ct-p-serv').textContent=$('ct-serv').value||'Seu serviço';$('ct-p-nome').textContent=$('ct-nome').value||'Seu Nome';$('ct-p-zap').textContent=$('ct-zap').value||'(00) 00000-0000';$('ct-p-end').textContent=$('ct-end').value;putQR($('ct-p-qr'),waLink($('ct-zap').value));$('ct-prev').style.background='linear-gradient(135deg,'+S.ct+','+adj(S.ct,-45)+')'}
-function dlCT(){var c=document.createElement('canvas');c.width=1050;c.height=600;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1050,600);g.addColorStop(0,S.ct);g.addColorStop(1,adj(S.ct,-45));x.fillStyle=g;x.fillRect(0,0,1050,600);
-x.fillStyle='#fff';x.textAlign='left';x.font='800 52px Inter,Arial';x.fillText($('ct-emp').value||'Sua Empresa',60,110);x.font='400 30px Inter,Arial';x.fillText($('ct-serv').value||'',60,158);
-x.font='700 32px Inter,Arial';x.fillText($('ct-nome').value||'',60,430);x.font='400 28px Inter,Arial';x.fillText($('ct-zap').value||'',60,472);x.fillText($('ct-end').value||'',60,510);
-x.fillStyle='#fff';x.fillRect(850,390,150,150);return drawQR(x,waLink($('ct-zap').value),862,402,126).then(function(){save(c,'cartao-impressao.png');saveHist('Cartão Impressão',$('ct-emp').value||'Cartão');toast('✅ Cartão com QR real baixado!')})}
-
-/* 6 BANNER */
-function setBNZ(k){S.bnz=k;['instagram','story','facebook','zap'].forEach(function(j){$('bnz-'+j).style.borderColor=(j===k)?'var(--ac)':'#cbd5e1'});var r={instagram:'1/1',story:'9/16',facebook:'1.91/1',zap:'9/16'}[k];$('bn-prev').style.aspectRatio=r;updBN()}
-function setBNT(k){S.bnt=k;['promo','novo','aberto','gratidao'].forEach(function(j){$('bnt-'+j).style.borderColor=(j===k)?'var(--ac)':'#cbd5e1'});updBN()}
-function updBN(){var ic={promo:'🏷️',novo:'✨',aberto:'🎉',gratidao:'🙏'}[S.bnt];$('bn-p-icon').textContent=ic;$('bn-p-tit').textContent=$('bn-tit').value||'PROMOÇÃO';$('bn-p-txt').textContent=$('bn-txt').value||'Complemento';$('bn-p-emp').textContent=$('bn-emp').value||'Empresa'}
-function dlBN(){var d={instagram:[1080,1080],story:[1080,1920],facebook:[1200,630],zap:[1080,1920]}[S.bnz],c=document.createElement('canvas');c.width=d[0];c.height=d[1];var x=c.getContext('2d');var g=x.createLinearGradient(0,0,d[0],d[1]);g.addColorStop(0,'#8b5cf6');g.addColorStop(1,'#3b82f6');x.fillStyle=g;x.fillRect(0,0,d[0],d[1]);
-x.fillStyle='#fff';x.textAlign='center';var ic={promo:'🏷️',novo:'✨',aberto:'🎉',gratidao:'🙏'}[S.bnt];x.font=(d[1]>1500?160:120)+'px Arial';x.fillText(ic,d[0]/2,d[1]*0.32);
-x.font='800 '+(d[1]>1500?92:80)+'px Inter,Arial';wrap(x,$('bn-tit').value||'PROMOÇÃO',d[0]/2,d[1]*0.48,d[0]-160,d[1]>1500?104:92);
-x.font='400 '+(d[1]>1500?52:50)+'px Inter,Arial';wrap(x,$('bn-txt').value||'',d[0]/2,d[1]*0.64,d[0]-200,64);
-x.font='700 42px Inter,Arial';x.fillText($('bn-emp').value||'Empresa',d[0]/2,d[1]*0.86);save(c,'banner-'+S.bnz+'.png');saveHist('Banner',S.bnz);toast('✅ Banner baixado!')}
-
-/* 7 ANÚNCIO */
-function updAN(){$('an-p-prod').textContent=$('an-prod').value||'Produto';$('an-p-preco').textContent=$('an-preco').value||'R$ 0,00';$('an-p-desc').textContent=$('an-desc').value||'Descrição';$('an-p-cont').textContent=$('an-cont').value||'Contato'}
-function dlAN(){var c=document.createElement('canvas');c.width=1080;c.height=1080;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1080,1080);g.addColorStop(0,'#fbbf24');g.addColorStop(1,'#ea580c');x.fillStyle=g;x.fillRect(0,0,1080,1080);
-x.fillStyle='#fff';x.textAlign='center';x.font='140px Arial';x.fillText('💰',540,260);x.font='800 76px Inter,Arial';wrap(x,$('an-prod').value||'Produto',540,400,920,88);
-x.font='800 110px Inter,Arial';x.fillText($('an-preco').value||'R$ 0,00',540,620);x.font='400 44px Inter,Arial';wrap(x,$('an-desc').value||'',540,720,900,58);
-x.fillStyle='#fff';x.fillRect(240,840,600,100);x.fillStyle='#7c2d12';x.font='700 42px Inter,Arial';x.fillText($('an-cont').value||'Contato',540,905);save(c,'anuncio.png');saveHist('Anúncio',$('an-prod').value||'Anúncio');toast('✅ Anúncio baixado!')}
-
-/* 8 STORY */
-function updST(){$('st-p-perg').textContent=$('st-perg').value||'Sua pergunta';$('st-p-a').textContent=$('st-a').value||'Opção A';$('st-p-b').textContent=$('st-b').value||'Opção B';$('st-p-user').textContent=$('st-user').value||'@seuperfil'}
-function dlST(){var c=document.createElement('canvas');c.width=1080;c.height=1920;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,1080,1920);g.addColorStop(0,'#7c3aed');g.addColorStop(.5,'#db2777');g.addColorStop(1,'#f59e0b');x.fillStyle=g;x.fillRect(0,0,1080,1920);
-x.fillStyle='#fff';x.textAlign='left';x.font='400 34px Inter,Arial';x.fillText($('st-user').value||'@seuperfil',90,220);
-x.font='800 78px Inter,Arial';wrap(x,$('st-perg').value||'Sua pergunta',90,760,900,92);
-x.strokeStyle='#fff';x.lineWidth=6;x.strokeRect(90,1000,900,110);x.font='700 44px Inter,Arial';x.fillText($('st-a').value||'Opção A',130,1072);
-x.globalAlpha=.55;x.strokeRect(90,1150,900,110);x.globalAlpha=1;x.font='400 44px Inter,Arial';x.fillText($('st-b').value||'Opção B',130,1222);
-x.font='400 34px Inter,Arial';x.fillText('Toque para votar 👆',90,1400);save(c,'story-enquete.png');saveHist('Story',$('st-perg').value||'Story');toast('✅ Story baixado!')}
-
-/* 9 FLYER */
-function updFL(){$('fl-p-tit').textContent=$('fl-tit').value||'Título';$('fl-p-data').textContent=$('fl-data').value||'Data';$('fl-p-local').textContent=$('fl-local').value||'Local';$('fl-p-det').textContent=$('fl-det').value||'Detalhes';$('fl-p-cont').textContent=$('fl-cont').value||'Contato'}
-function dlFL(){var c=document.createElement('canvas');c.width=1080;c.height=1440;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,0,1440);g.addColorStop(0,'#34d399');g.addColorStop(1,'#0f766e');x.fillStyle=g;x.fillRect(0,0,1080,1440);
-x.fillStyle='#fff';x.textAlign='center';x.font='130px Arial';x.fillText('🎉',540,240);x.font='800 78px Inter,Arial';wrap(x,$('fl-tit').value||'Título',540,400,920,90);
-x.fillStyle='rgba(255,255,255,.2)';x.fillRect(140,560,800,150);x.fillStyle='#fff';x.font='700 44px Inter,Arial';x.fillText($('fl-data').value||'Data',540,625);x.font='400 40px Inter,Arial';x.fillText($('fl-local').value||'Local',540,680);
-x.font='400 38px Inter,Arial';wrap(x,$('fl-det').value||'',540,820,880,52);
-x.fillStyle='#fff';x.fillRect(290,1180,500,90);x.fillStyle='#065f46';x.font='700 40px Inter,Arial';x.fillText($('fl-cont').value||'Contato',540,1238);save(c,'flyer.png');saveHist('Flyer',$('fl-tit').value||'Flyer');toast('✅ Flyer baixado!')}
-
-/* 10 CARDÁPIO */
-function addCD2(){var d=document.createElement('div');d.className='flex gap-2';d.innerHTML='<input class="inp c2-n" placeholder="Item" oninput="updCD2()"><input class="inp c2-p" style="width:96px" placeholder="R$" oninput="updCD2()"><button onclick="this.parentNode.remove();updCD2()" class="text-red-500 font-bold">✕</button>';$('cd2-list').appendChild(d)}
-function cd2Rows(){var out=[];var r=$('cd2-list').children;for(var i=0;i<r.length;i++){var n=r[i].querySelector('.c2-n').value,p=r[i].querySelector('.c2-p').value;if(n||p)out.push([n||'Item',p||'R$ 0'])}return out}
-function updCD2(){$('cd2-p-nome').textContent=$('cd2-nome').value||'Seu Negócio';$('cd2-p-cont').textContent=$('cd2-cont').value||'Contato';$('cd2-p-itens').innerHTML=cd2Rows().map(function(r){return '<div class="flex justify-between"><span>'+r[0]+'</span><span class="font-bold">'+r[1]+'</span></div>'}).join('')}
-function dlCD2(){var rows=cd2Rows(),H=420+rows.length*76+220,c=document.createElement('canvas');c.width=1080;c.height=H;var x=c.getContext('2d');var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#8b5cf6');g.addColorStop(1,'#4338ca');x.fillStyle=g;x.fillRect(0,0,1080,H);
-x.fillStyle='#fff';x.textAlign='center';x.font='800 62px Inter,Arial';x.fillText($('cd2-nome').value||'Seu Negócio',540,120);x.font='400 28px Inter,Arial';x.fillText('LISTA DE PREÇOS',540,168);
-var y=280;rows.forEach(function(r){x.textAlign='left';x.font='400 40px Inter,Arial';x.fillText(r[0],80,y);x.textAlign='right';x.font='700 40px Inter,Arial';x.fillText(r[1],1000,y);y+=76});
-x.textAlign='center';x.font='700 38px Inter,Arial';x.fillText('Pedidos: '+($('cd2-cont').value||''),540,y+80);save(c,'lista-precos.png');saveHist('Lista de Preços',$('cd2-nome').value||'Lista');toast('✅ Lista baixada!')}
-
-/* 11 LOGO */
-function setLG(k){S.lgs=k;['moderno','classico','minimal'].forEach(function(j){$('lgs-'+j).style.borderColor=(j===k)?'var(--ac)':'#cbd5e1'});updLG()}
-function setLC(c,el){S.lgc=c;var d=document.querySelectorAll('#logo .cdot');for(var i=0;i<d.length;i++)d[i].classList.remove('on');el.classList.add('on');updLG()}
-function setLI(i,el){S.lgi=i;updLG()}
-function updLG(){var n=$('lg-p-nome');n.textContent=$('lg-nome').value||'Sua Empresa';n.style.color=S.lgc;
-n.style.fontFamily=(S.lgs==='classico')?'Georgia,serif':'Inter,sans-serif';n.style.fontWeight=(S.lgs==='minimal')?'300':'800';n.style.textTransform=(S.lgs==='moderno')?'uppercase':'none';
-$('lg-p-slogan').textContent=$('lg-slogan').value||'Slogan';$('lg-p-icon').textContent=S.lgi}
-function dlLG(){var c=document.createElement('canvas');c.width=1200;c.height=1200;var x=c.getContext('2d');x.fillStyle='#ffffff';x.fillRect(0,0,1200,1200);
-x.textAlign='center';if(S.lgi){x.font='220px Arial';x.fillText(S.lgi,600,430)}
-x.fillStyle=S.lgc;x.font=((S.lgs==='minimal')?'300 ':'800 ')+(S.lgs==='classico'?'96px Georgia,serif':'96px Inter,Arial');
-var nm=$('lg-nome').value||'Sua Empresa';if(S.lgs==='moderno')nm=nm.toUpperCase();x.fillText(nm,600,640);
-x.fillStyle='#6b7280';x.font='400 44px Inter,Arial';x.fillText($('lg-slogan').value||'',600,740);save(c,'logo.png');saveHist('Logo',$('lg-nome').value||'Logo');toast('✅ Logo baixada!')}
-
-/* 12 ASSINATURA */
-function updAS(){$('as-p-nome').textContent=$('as-nome').value||'Seu Nome';$('as-p-cargo').textContent=($('as-cargo').value||'Cargo')+' · '+($('as-emp').value||'Empresa');$('as-p-zap').textContent='📞 '+($('as-zap').value||'Telefone');$('as-p-mail').textContent='✉️ '+($('as-mail').value||'email')}
-function dlAS(){var h='<table cellpadding="0" cellspacing="0" style="font-family:Arial,sans-serif;font-size:14px;color:#333"><tr><td style="border-left:4px solid #6366f1;padding-left:14px"><b style="font-size:16px">'+($('as-nome').value||'Seu Nome')+'</b><br><span style="color:#777">'+($('as-cargo').value||'Cargo')+' · '+($('as-emp').value||'Empresa')+'</span><br><br>📞 '+($('as-zap').value||'')+'<br>✉️ <span style="color:#6366f1">'+($('as-mail').value||'')+'</span></td></tr></table>';
-if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(h).then(function(){toast('📋 Copiado! Cole na assinatura do seu email')},function(){toast('Não foi possível copiar')})}else{var t=document.createElement('textarea');t.value=h;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('📋 Copiado!')}}
-
-/* INIT */
-updCD();genCopy();updSZ();updMP();updCT();updBN();updAN();updST();updFL();updCD2();updLG();updAS();
-</script>
-</body>
-</html>
+x.fillStyle='#fff';x.textAlign='left';x.font='600 28px Inter,Arial';x.fillText('NOVIDADE',80,140);x.font='800 84px
